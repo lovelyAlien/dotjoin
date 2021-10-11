@@ -104,9 +104,10 @@ public class AccountService implements UserDetailsService {
 //    }
 //
     @Transactional(readOnly = true)
-    public Account getMyUserWithAuthorities() {
+    public UserAccount getMyUserWithAuthorities() {
         Optional<String> email= SecurityUtil.getCurrentEmail();
-        return accountRepository.findByEmail(email.get());
+        Account account=accountRepository.findByEmail(email.get());
+        return new UserAccount(account);
     }
 
 }

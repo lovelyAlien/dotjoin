@@ -5,7 +5,7 @@ import com.dangsan.dotjoin.infra.jwt.JwtFilter;
 import com.dangsan.dotjoin.infra.jwt.TokenProvider;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
-import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
 import com.dangsan.dotjoin.modules.account.dto.LoginDto;
 import com.dangsan.dotjoin.modules.account.dto.TokenDto;
@@ -13,14 +13,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -30,7 +28,6 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class AccountController {
     private final AccountService accountService;
-    private final AccountRepository accountRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -78,10 +75,12 @@ public class AccountController {
 
 
 
+
+
     @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Account> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(accountService.getMyUserWithAuthorities());
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal UserAccount userAccount) {
+        return new ResponseEntity<>(userAccount, HttpStatus.OK);
     }
 
 //    @GetMapping("/user/{username}")
