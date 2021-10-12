@@ -17,13 +17,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AccountController {
@@ -74,6 +77,16 @@ public class AccountController {
 //    }
 
 
+
+    @GetMapping("/sign-up")
+    public String signUpView() {
+        return "signUp";
+    }
+
+    @GetMapping("/login")
+    public String loginView() {
+        return "login";
+    }
 
 
 
