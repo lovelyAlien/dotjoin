@@ -68,16 +68,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
                 .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/loginProc")
-//                .defaultSuccessUrl("/")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login") //구글 로그인이 완료된 후 후처리가 필요함.
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/loginProc")
+                .defaultSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .loginPage("/login") //구글 로그인이 완료된 후 후처리가 필요함.
 //                .userInfoEndpoint()
 //                .userService(principalOauth2UserService)
-//                .and()
+                .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
 }
