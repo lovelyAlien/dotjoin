@@ -70,6 +70,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         else{
             System.out.println("구글 로그인을 이미 한 적 있습니다. 자동 회원가입이 되어 있습니다.");
 
+
+
         }
 //
 //        return new PrincipalDetails(userEntity, oauth2User.getAttributes());
