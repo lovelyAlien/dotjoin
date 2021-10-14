@@ -84,11 +84,12 @@ public class Account extends Timestamped {
     }
 
     @Builder
-    public Account(String username, String nickname, String password, String email, String roles, String provider, String providerId){
+    public Account(String username, String nickname, String password, String email, String profileImgUrl, String roles, String provider, String providerId){
         this.username= username;
         this.nickname=nickname;
         this.password=password;
         this.email=email;
+        this.profileImgUrl=profileImgUrl;
         this.roles=roles;
         this.provider=provider;
         this.providerId=providerId;

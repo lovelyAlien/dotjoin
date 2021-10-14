@@ -27,6 +27,11 @@ spring:
             scope:
               - profile
               - email
+
+          github:
+            client-id: 11262b701abe5fd6d608
+            client-secret: 9170211b623bb88ed10b0561cbd757af9c0eeb0f
+
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize

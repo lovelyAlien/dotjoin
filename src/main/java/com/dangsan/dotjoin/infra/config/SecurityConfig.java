@@ -5,6 +5,7 @@ import com.dangsan.dotjoin.infra.jwt.JwtAuthenticationEntryPoint;
 import com.dangsan.dotjoin.infra.jwt.JwtSecurityConfig;
 import com.dangsan.dotjoin.infra.jwt.TokenProvider;
 import com.dangsan.dotjoin.infra.oauth.CustomOAuth2UserService;
+import com.dangsan.dotjoin.infra.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final CustomOAuth2UserService principalOauth2UserService;
-
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler successHandler;
 
     @Override
     public void configure(WebSecurity web) {
@@ -41,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
+
 
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
@@ -78,8 +79,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.oauth2Login()
                 .loginPage("/login") //구글 로그인이 완료된 후 후처리가 필요함.
+                .successHandler(successHandler)
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService);
+                .userService(oAuth2UserService);
+
+        httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
 
 
     }
