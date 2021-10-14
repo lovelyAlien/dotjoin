@@ -4,6 +4,7 @@ import com.dangsan.dotjoin.infra.jwt.JwtAccessDeniedHandler;
 import com.dangsan.dotjoin.infra.jwt.JwtAuthenticationEntryPoint;
 import com.dangsan.dotjoin.infra.jwt.JwtSecurityConfig;
 import com.dangsan.dotjoin.infra.jwt.TokenProvider;
+import com.dangsan.dotjoin.infra.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
+    private final CustomOAuth2UserService principalOauth2UserService;
 
 
     @Override
@@ -39,12 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
+
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
-
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -71,13 +73,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/loginProc")
-                .defaultSuccessUrl("/")
-                .and()
-                .oauth2Login()
+                .defaultSuccessUrl("/");
+
+
+        httpSecurity.oauth2Login()
                 .loginPage("/login") //구글 로그인이 완료된 후 후처리가 필요함.
-//                .userInfoEndpoint()
-//                .userService(principalOauth2UserService)
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService);
+
+
     }
 }

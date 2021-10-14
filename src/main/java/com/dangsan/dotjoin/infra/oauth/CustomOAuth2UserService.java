@@ -2,16 +2,21 @@ package com.dangsan.dotjoin.infra.oauth;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
+import com.dangsan.dotjoin.modules.account.service.AccountService;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -19,10 +24,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private AccountService accountService;
+
     //loadUser: 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수
     // userRequest 는 code를 받아서 accessToken을 응답 받은 객체
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        Assert.notNull(userRequest, "userRequest cannot be null");
 //		OAuth2User oAuth2User = super.loadUser(userRequest); // google의 회원 프로필 조회
 
         // code를 통해 구성한 정보
@@ -37,27 +46,31 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         String provider= userRequest.getClientRegistration().getClientId(); //google
         String providerId=oauth2User.getAttribute("sub");
+        String nickname=oauth2User.getAttribute("name");
         String username=provider+"_"+providerId;
         String password=bCryptPasswordEncoder.encode("GOOGLE_PASSWORD");
         String email=oauth2User.getAttribute("email");
-        String role="ROLE_USER";
-        Account userEntity=accountRepository.findByEmail(email);
+        String roles="USER";
+        Account accountEntity=accountRepository.findByEmail(email);
 
-//        if(userEntity==null){
-//            System.out.println("구글 로그인이 최초입니다.");
-//            userEntity = User.builder()
-//                    .username(username)
-//                    .email(email)
-//                    .role(role)
-//                    .provider(provider)
-//                    .providerId(providerId)
-//                    .build();
-//            userRepository.save(userEntity);
-//        }
-//        else{
-//            System.out.println("구글 로그인을 이미 한 적 있습니다. 자동 회원가입이 되어 있습니다.");
-//
-//        }
+
+        if(accountEntity==null){
+            System.out.println("구글 로그인이 최초입니다.");
+            accountEntity = Account.builder()
+                    .email(email)
+                    .nickname(nickname)
+                    .password(password)
+                    .roles(roles)
+                    .username(username)
+                    .provider(provider)
+                    .providerId(providerId)
+                    .build();
+            accountRepository.save(accountEntity);
+        }
+        else{
+            System.out.println("구글 로그인을 이미 한 적 있습니다. 자동 회원가입이 되어 있습니다.");
+
+        }
 //
 //        return new PrincipalDetails(userEntity, oauth2User.getAttributes());
         // token을 통해 응답받은 회원정보
