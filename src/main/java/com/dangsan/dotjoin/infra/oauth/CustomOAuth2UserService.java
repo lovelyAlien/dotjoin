@@ -29,11 +29,6 @@ import java.util.Map;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-
-
-
-
-
     //loadUser: 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수
     // userRequest 는 code를 받아서 accessToken을 응답 받은 객체
     @Override
