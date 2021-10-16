@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -106,8 +107,8 @@ public class AccountController {
 
     @GetMapping("/user")
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal UserAccount userAccount) {
-        return new ResponseEntity<>(userAccount, HttpStatus.OK);
+    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 //    @GetMapping("/user/{username}")
