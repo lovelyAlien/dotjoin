@@ -13,8 +13,8 @@ public class Answer extends AbstractEntity{
     @JsonProperty
     private Account writer;
 
-    @Column
-    private Long like;
+    @JsonProperty
+    private Long countOfLike=0L;
 
     @Lob // 255자가 넘는 String 타입일 경우 애노테이션 추가
     @JsonProperty
@@ -38,6 +38,16 @@ public class Answer extends AbstractEntity{
 
     public boolean isSameWriter(Account loginUser) {
         return loginUser.equals(this.writer);
+    }
+
+    // 답변 수 증가 메서드
+    public void addLike() {
+        this.countOfLike += 1;
+    }
+
+    // 답변 수 감소 메서드
+    public void deleteLike() {
+        this.countOfLike -= 1;
     }
 
     @Override

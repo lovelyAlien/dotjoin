@@ -2,7 +2,7 @@ package com.dangsan.dotjoin.modules.qna;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.dom4j.tree.AbstractEntity;
+
 
 import javax.persistence.*;
 import java.util.List;
