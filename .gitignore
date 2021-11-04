@@ -18,7 +18,11 @@ target/
 *.iws
 *.iml
 *.ipr
-
+*.tar
+*.jar
+*.zip
+*.war
+*.log
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,3 +35,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Mac ###
+.DS_Store
+
+
