@@ -4,6 +4,8 @@ import com.dangsan.dotjoin.infra.jwt.JwtAccessDeniedHandler;
 import com.dangsan.dotjoin.infra.jwt.JwtAuthenticationEntryPoint;
 import com.dangsan.dotjoin.infra.jwt.JwtSecurityConfig;
 import com.dangsan.dotjoin.infra.jwt.TokenProvider;
+import com.dangsan.dotjoin.infra.oauth.CustomOAuth2UserService;
+import com.dangsan.dotjoin.infra.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
-
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler successHandler;
 
     @Override
     public void configure(WebSecurity web) {
@@ -39,12 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+
+
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
-
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -62,12 +65,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/sign-up").permitAll()
-                .anyRequest().authenticated()
-
+                .antMatchers("/api/user/**").authenticated()
+                //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+                //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')")
+                .antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().permitAll()
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/loginProc")
+                .defaultSuccessUrl("/");
+
+
+        httpSecurity.oauth2Login()
+                .loginPage("/login") //구글 로그인이 완료된 후 후처리가 필요함.
+                .successHandler(successHandler)
+                .userInfoEndpoint()
+                .userService(oAuth2UserService);
+
+        httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
+
+
     }
 }

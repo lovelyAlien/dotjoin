@@ -14,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -82,9 +84,10 @@ public class TokenProvider implements InitializingBean {
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-        UserAccount userAccount=(UserAccount) accountService.loadUserByUsername(claims.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(userAccount, token, authorities);
+//        UserAccount userAccount=(UserAccount) accountService.loadUserByUsername(claims.getSubject());
+        UserDetails user= new User(claims.getSubject(), "",authorities );
+        return new UsernamePasswordAuthenticationToken(user, token, authorities);
     }
 
     public boolean validateToken(String token) {

@@ -1,9 +1,13 @@
 package com.dangsan.dotjoin.modules.account.model;
 
 import com.dangsan.dotjoin.modules.Timestamped;
+import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class Account extends Timestamped {
     @Id
@@ -40,6 +45,12 @@ public class Account extends Timestamped {
 
     @Column
     private String birth; //생년월일
+
+    // OAuth를 위해 구성한 추가 필드 2개
+    @Column
+    private String provider;
+    @Column
+    private String providerId;
 
 //    @Column
 //    private LocalDateTime createdDate; // 계정 생성일
@@ -71,6 +82,18 @@ public class Account extends Timestamped {
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Account(String username, String nickname, String password, String email, String profileImgUrl, String roles, String provider, String providerId){
+        this.username= username;
+        this.nickname=nickname;
+        this.password=password;
+        this.email=email;
+        this.profileImgUrl=profileImgUrl;
+        this.roles=roles;
+        this.provider=provider;
+        this.providerId=providerId;
     }
 
 //    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL )

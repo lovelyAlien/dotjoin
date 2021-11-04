@@ -17,13 +17,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AccountController {
@@ -41,6 +47,23 @@ public class AccountController {
         response.sendRedirect("/api/user");
     }
 
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String testOAuthLogin(
+                                               Authentication authentication){
+        System.out.println(authentication);
+        System.out.println("/test/oauth/login================");
+        OAuth2User oAuth2User=(OAuth2User) authentication.getPrincipal();
+//        System.out.println("authentication "+ oAuth2User.getAttributes());
+//        System.out.println("oauth: "+ oauth.getAttributes());
+//        System.out.println("userDetails: "+ userDetails.getAttributes());
+        return "OAuth 세션 정보 확인하기";
+    }
+
+    @GetMapping("/sign-up")
+    public String signUpForm() {
+        return "signUp";
+    }
+
     @PostMapping("/sign-up")
     public ResponseEntity<Account> signUpSubmit(@Valid @RequestBody SignUpDto signUpForm, Errors errors) {
         if (errors.hasErrors()) {
@@ -52,9 +75,15 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
+    @GetMapping("/login")
+    public String loginForm() {
+        return "/login";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 
+        System.out.println("loginDto 받음");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
@@ -68,19 +97,20 @@ public class AccountController {
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
     }
 
+
+
+
+
 //    @GetMapping("/logout")
 //    public void logout(HttpServletRequest request, HttpServletResponse response){
 //        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 //    }
 
 
-
-
-
     @GetMapping("/user")
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal UserAccount userAccount) {
-        return new ResponseEntity<>(userAccount, HttpStatus.OK);
+    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 //    @GetMapping("/user/{username}")
