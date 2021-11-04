@@ -1,6 +1,7 @@
 package com.dangsan.dotjoin.modules.account.model;
 
 import com.dangsan.dotjoin.modules.Timestamped;
+import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
