@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -38,10 +40,12 @@ public class Memoir {
     private String whyReason;
 
     @Column
-    private String referenceURL;
+    @OneToMany(mappedBy = "memoir")
+    private List<Url> referenceURL= new ArrayList<Url>();
 
     @Column
-    private String gitURL;
+    @OneToOne(mappedBy = "memoir")
+    private Url gitURL;
 
     @Column
     private LocalDate developDate;

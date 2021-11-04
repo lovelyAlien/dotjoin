@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.model;
 
+import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +40,10 @@ public class ToyProject {
     private List<SubProject> subProjects = new ArrayList<SubProject>();
 
     @OneToMany(mappedBy = "toyProject")
-    private List<ToyProjectAccount> requesters = new ArrayList<ToyProjectAccount>();
+    private List<Account> requesters = new ArrayList<Account>(); //참여 희망자
+
+    @OneToMany(mappedBy= "toyProject")
+    private List<Account> members= new ArrayList<Account>(); //참여자
 
     @OneToMany(mappedBy = "toyProject")
     private List<ToyProjectRate> projectRates = new ArrayList<ToyProjectRate>();

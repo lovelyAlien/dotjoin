@@ -19,7 +19,7 @@ public class SubProjectRate {
     private SubProject subProject;
 
     @Column
-    @ManyToOne
+    @OneToOne
     private Account rater;
 
     @Column

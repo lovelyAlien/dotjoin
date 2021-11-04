@@ -19,7 +19,7 @@ public class ToyProjectRate {
     private ToyProject toyProject;
 
     @Column
-    @ManyToOne
+    @OneToOne
     private Account rater;
 
     @Column

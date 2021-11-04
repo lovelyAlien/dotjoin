@@ -21,7 +21,7 @@ public class Answer {
     private Question question;
 
     @Column
-    @ManyToOne
+    @OneToOne
     private Account answerer;
 
     @Column
