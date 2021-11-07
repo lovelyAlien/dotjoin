@@ -12,11 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ToyProjectService {
 
-    private final ToyProjectRepository projectRepository;
-
-    public List<ProjectInWork> findMyProject() {
-        List<ProjectInWork> projects = projectRepository.findAllByProjectStartGreaterThanEqualAndProjectEndLessThanEqual(LocalDate.now());
-
-        return projects;
-    }
+//    private final ToyProjectRepository projectRepository;
+//
+//    public List<ProjectInWork> findMyProject() {
+//        List<ProjectInWork> projects = projectRepository.findAllByProjectStartGreaterThanEqualAndProjectEndLessThanEqual(LocalDate.now());
+//
+//        return projects;
+//    }
 }

@@ -56,11 +56,11 @@ public class ToyProjectController {
     // endregion
 
     // region 메인 페이지
-    @GetMapping("/main/projectinwork")
-    public ResponseEntity<?> currentWorkingProject() {
-        List<ProjectInWork> findProject = toyProjectService.findMyProject();
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
+//    @GetMapping("/main/projectinwork")
+//    public ResponseEntity<?> currentWorkingProject() {
+//        List<ProjectInWork> findProject = toyProjectService.findMyProject();
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
     // endregion
 
     // region 단위 프로젝트 (SubProject)
