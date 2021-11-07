@@ -39,10 +39,7 @@ public class Memoir {
     private String whyReason;
 
     @OneToMany
-    private List<Url> referenceUrl;
-
-    @OneToMany
-    private List<Url> gitUrl;
+    private List<Url> url;
 
     @Column
     private LocalDate developDate;

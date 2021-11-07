@@ -12,9 +12,13 @@ import javax.persistence.*;
 public class Url {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private String type; //GIT or REF
 
     @Column
     private String url;
