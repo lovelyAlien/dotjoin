@@ -1,5 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
+import com.dangsan.dotjoin.modules.Timestamped;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,8 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-public class SubProject {
+@NoArgsConstructor
+public class SubProject extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,4 +53,12 @@ public class SubProject {
 
     @OneToMany(mappedBy = "subProject")
     private List<Memoir> projectMemoirs = new ArrayList<Memoir>();
+
+    public SubProject(ToyProject toyProject, RegisterSubProject registerDto){
+        this.toyProject=toyProject;
+        this.title=registerDto.getTitle();
+        this.expectedWork=registerDto.getExpectedWork();
+    }
+
+
 }

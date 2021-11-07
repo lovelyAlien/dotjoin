@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 public class ToyProjectController {
 
     private final ToyProjectService toyProjectService;
-
     // region 프로젝트 (ToyProject)
     @PostMapping("/")
     public ResponseEntity<?> registerToyProject(@RequestBody RegisterToyProject registerToyProject) {
@@ -58,9 +57,10 @@ public class ToyProjectController {
 
     // region 단위 프로젝트 (SubProject)
     @PostMapping("/{projectId}/subprojects/")
-    public ResponseEntity<?> registerSubProject (@PathVariable String projectId,
-                                                 @RequestBody RegisterSubProject subProject) {
+    public ResponseEntity<?> registerSubProject (@PathVariable Long projectId,
+                                                 @RequestBody RegisterSubProject subProjectDto) {
 
+        toyProjectService.registerSubProject(projectId, subProjectDto);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

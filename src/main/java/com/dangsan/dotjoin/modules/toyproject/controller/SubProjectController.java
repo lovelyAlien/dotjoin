@@ -24,12 +24,13 @@ public class SubProjectController {
 
 
     @GetMapping("/kanbanboards/{kanbanBoardId}")
-    public ResponseEntity<?> inquireAllKanbanBoard (@PathVariable Long kanbanBoardId) {
+    public ResponseEntity<?> inquireKanbanBoard (@PathVariable Long kanbanBoardId) {
 
 
-        List<KanbanBoardDto> kanbanboardDtos= kanbanBoardService.inquireAllKanbanBoardDto(kanbanBoardId);
-        return ResponseEntity.ok(kanbanboardDtos);
+        List<KanbanBoardDto> kanbanboardDtoList= kanbanBoardService.inquireAllKanbanBoardDto(kanbanBoardId);
+        return ResponseEntity.ok(kanbanboardDtoList);
     }
+
 
 
 

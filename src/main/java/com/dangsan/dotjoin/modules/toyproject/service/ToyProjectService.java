@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanBoard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
@@ -17,9 +18,12 @@ public class ToyProjectService {
     private final KanbanBoardRepository kanbanBoardRepository;
 
 
-    public void registerSubProject(Long projectId, SubProject subProjectDto){
+    public void registerSubProject(Long projectId, RegisterSubProject subProjectDto){
         ToyProject toyProject= toyProjectRepository.findById(projectId).get(); //.get()의 경우 결과값이 null일 경우 NoSuchElementException 발생
-        SubProject subProject= subProjectRepository.save(subProjectDto);
+        SubProject subProject=subProjectRepository.save(new SubProject(toyProject, subProjectDto));
+
+
+
 
 
         //subproject 생성 시, kanbanboard는 자동으로 생성
