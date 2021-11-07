@@ -1,7 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.InquireAllKanbanBoardDto;
+
+import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanBoardDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.RegisterQuestion;
 import com.dangsan.dotjoin.modules.toyproject.service.KanbanBoardService;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,20 @@ import java.util.List;
 public class SubProjectController {
     private final KanbanBoardService kanbanBoardService;
 
-    @GetMapping("/kanbanboard/{kanbanBoardId}")
+
+
+
+
+    @GetMapping("/kanbanboards/{kanbanBoardId}")
     public ResponseEntity<?> inquireAllKanbanBoard (@PathVariable Long kanbanBoardId) {
 
 
-
-        List<InquireAllKanbanBoardDto> kanbanboards= kanbanBoardService.inquireAllKanbanBoard(kanbanBoardId);
-       return ResponseEntity.ok(kanbanboards);
+        List<KanbanBoardDto> kanbanboardDtos= kanbanBoardService.inquireAllKanbanBoardDto(kanbanBoardId);
+        return ResponseEntity.ok(kanbanboardDtos);
     }
+
+
+
 
 
 

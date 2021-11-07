@@ -32,4 +32,10 @@ public class KanbanBoard {
     private String BoardName;
 
 
+    public KanbanBoard(ToyProject toyProject, SubProject subProject){
+        this.toyProject= toyProject;
+        this.subProject=subProject;
+    }
+
+
 }

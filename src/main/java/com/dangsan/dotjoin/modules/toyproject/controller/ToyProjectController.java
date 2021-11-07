@@ -60,8 +60,12 @@ public class ToyProjectController {
     @PostMapping("/{projectId}/subprojects/")
     public ResponseEntity<?> registerSubProject (@PathVariable String projectId,
                                                  @RequestBody RegisterSubProject subProject) {
+
+
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
 
     @GetMapping("/{projectId}/subprojects/")
     public ResponseEntity<?> inquireAllSubProject (@PathVariable String projectId) {
@@ -69,6 +73,9 @@ public class ToyProjectController {
 
         return ResponseEntity.ok(allSubProject);
     }
+
+
+
 
     @GetMapping("/{projectId}/subprojects/{subprojectId}")
     public ResponseEntity<?> inquireTargetSubProject(@PathVariable String projectId,

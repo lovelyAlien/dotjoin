@@ -25,7 +25,7 @@ public class KanbanCard {
 
 
     @Column
-    private String Detail;
+    private String detail;
 
 
 }

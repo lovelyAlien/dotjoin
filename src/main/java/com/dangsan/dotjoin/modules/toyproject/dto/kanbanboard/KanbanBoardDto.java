@@ -1,7 +1,14 @@
 package com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard;
 
 
-public class InquireAllKanbanBoardDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class KanbanBoardDto {
 
     private Long id;
 
