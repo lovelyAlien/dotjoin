@@ -11,16 +11,15 @@ import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestion;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProject;
+import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.*;
 import com.dangsan.dotjoin.modules.toyproject.service.ToyProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,6 +51,14 @@ public class ToyProjectController {
     @PutMapping("/{projectId}")
     public ResponseEntity<?> updateTargetToyProject(@PathVariable String projectId,
                                                     @RequestBody UpdateTargetToyProject targetToyProject) {
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    // endregion
+
+    // region 메인 페이지
+    @GetMapping("/main/projectinwork")
+    public ResponseEntity<?> currentWorkingProject() {
+        List<ProjectInWork> findProject = toyProjectService.findMyProject();
         return ResponseEntity.ok(HttpStatus.OK);
     }
     // endregion
