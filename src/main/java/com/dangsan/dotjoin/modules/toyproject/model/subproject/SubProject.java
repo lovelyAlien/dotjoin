@@ -45,6 +45,9 @@ public class SubProject extends Timestamped {
     @Column
     private LocalDate realEnd;
 
+    @OneToOne(mappedBy ="subProject")
+    private KanbanBoard kanbanBoard;
+
     @OneToMany(mappedBy = "subProject")
     private List<SubProjectRate> projectRates = new ArrayList<SubProjectRate>();
 
@@ -58,6 +61,12 @@ public class SubProject extends Timestamped {
         this.toyProject=toyProject;
         this.title=registerDto.getTitle();
         this.expectedWork=registerDto.getExpectedWork();
+    }
+
+
+    public void setKanbanBoard(ToyProject toyProject, KanbanBoard kanbanBoard){
+        kanbanBoard.setToyProjectAndSubProject(toyProject, this);
+        this.setKanbanBoard(kanbanBoard);
     }
 
 

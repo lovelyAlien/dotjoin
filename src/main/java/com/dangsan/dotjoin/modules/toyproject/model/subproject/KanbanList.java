@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class KanbanList {
 
     @Id
@@ -31,4 +33,10 @@ public class KanbanList {
 
     @Column
     private String detail;
+
+
+
+    public KanbanList(String title){
+        this.title=title;
+    }
 }

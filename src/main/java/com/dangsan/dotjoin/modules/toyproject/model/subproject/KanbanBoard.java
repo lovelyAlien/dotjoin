@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class KanbanBoard {
 
 
@@ -32,10 +34,16 @@ public class KanbanBoard {
     private String BoardName;
 
 
-    public KanbanBoard(ToyProject toyProject, SubProject subProject){
+    public void setToyProjectAndSubProject(ToyProject toyProject, SubProject subProject){
         this.toyProject= toyProject;
         this.subProject=subProject;
     }
+
+    public void addKanbanList(KanbanList kanbanList){
+        kanbanList.setKanbanBoard(this);
+        this.kanbanList.add(kanbanList);
+    }
+
 
 
 }
