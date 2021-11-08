@@ -3,7 +3,9 @@ package com.dangsan.dotjoin.modules.toyproject.controller;
 
 
 import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanBoardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanCardDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.RegisterQuestion;
+import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanCard;
 import com.dangsan.dotjoin.modules.toyproject.service.KanbanBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,19 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/subprojects")
 public class SubProjectController {
-    private final KanbanBoardService kanbanBoardService;
 
 
 
 
-
-    @GetMapping("/kanbanboards/{kanbanBoardId}")
-    public ResponseEntity<?> inquireKanbanBoard (@PathVariable Long kanbanBoardId) {
-
-
-        List<KanbanBoardDto> kanbanboardDtoList= kanbanBoardService.inquireAllKanbanBoardDto(kanbanBoardId);
-        return ResponseEntity.ok(kanbanboardDtoList);
-    }
 
 
 }

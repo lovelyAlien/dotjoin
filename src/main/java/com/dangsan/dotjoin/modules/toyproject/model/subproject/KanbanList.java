@@ -25,18 +25,24 @@ public class KanbanList {
 
 
     @OneToMany(mappedBy = "kanbanList")
-    private List<KanbanCard> kanbanCard=new ArrayList<KanbanCard>();
+    private List<KanbanCard> kanbanCards=new ArrayList<KanbanCard>();
 
 
     @Column
-    private String title;// 할 일, 진행 중, 완료
+    private String type;// 할 일, 진행 중, 완료
 
     @Column
     private String detail;
 
 
 
-    public KanbanList(String title){
-        this.title=title;
+    public KanbanList(String type){
+        this.type=type;
+    }
+
+    public void addCard(KanbanCard kanbanCard){
+        kanbanCard.setKanbanList(this);
+        this.kanbanCards.add(kanbanCard);
+
     }
 }

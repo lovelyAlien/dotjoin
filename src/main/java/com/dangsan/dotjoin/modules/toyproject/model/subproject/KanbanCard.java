@@ -1,7 +1,9 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 
+import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanCardDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class KanbanCard {
 
     @Id
@@ -27,5 +30,10 @@ public class KanbanCard {
     @Column
     private String detail;
 
+
+    public KanbanCard(KanbanCardDto kanbanCardDto){
+        this.title=kanbanCardDto.getTitle();
+        this.detail=kanbanCardDto.getDetail();
+    }
 
 }

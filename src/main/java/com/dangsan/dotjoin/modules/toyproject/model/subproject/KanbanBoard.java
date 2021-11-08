@@ -28,7 +28,7 @@ public class KanbanBoard {
     private SubProject subProject;
 
     @OneToMany(mappedBy="kanbanBoard")
-    private List<KanbanList> kanbanList=new ArrayList<KanbanList>();
+    private List<KanbanList> kanbanLists=new ArrayList<KanbanList>();
 
     @Column
     private String BoardName;
@@ -41,7 +41,7 @@ public class KanbanBoard {
 
     public void addKanbanList(KanbanList kanbanList){
         kanbanList.setKanbanBoard(this);
-        this.kanbanList.add(kanbanList);
+        this.kanbanLists.add(kanbanList);
     }
 
 
