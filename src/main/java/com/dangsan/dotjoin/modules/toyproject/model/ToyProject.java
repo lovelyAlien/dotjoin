@@ -40,9 +40,14 @@ public class ToyProject {
     private List<SubProject> subProjects = new ArrayList<SubProject>();
 
     @OneToMany
+    @JoinTable(
+            name="toy_project_requester",
+            inverseJoinColumns = @JoinColumn(name="requester_id"))
     private List<Account> requesters = new ArrayList<Account>(); //참여 희망자
 
     @OneToMany
+    @JoinTable(name="toy_project_member",
+            inverseJoinColumns = @JoinColumn(name="member_id"))
     private List<Account> members= new ArrayList<Account>(); //참여자
 
     @OneToMany(mappedBy = "toyProject")
