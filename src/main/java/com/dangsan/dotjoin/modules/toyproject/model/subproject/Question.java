@@ -24,6 +24,7 @@ public class Question {
     @ManyToOne
     private Account questioner;
 
+
     @Column
     private String title;
 

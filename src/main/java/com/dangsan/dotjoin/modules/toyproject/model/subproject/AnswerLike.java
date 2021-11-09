@@ -24,5 +24,5 @@ public class AnswerLike {
     private Account rater;
 
     @Column
-    private double rate;
+    private double rate=0;
 }

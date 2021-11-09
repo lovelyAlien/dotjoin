@@ -33,8 +33,8 @@ public class KanbanBoardCustomRepositoryImpl implements KanbanBoardCustomReposit
         List<KanbanBoardDto> kanbanBoardDtoList =
                 jpaQueryFactory.select(Projections.bean(KanbanBoardDto.class, b.BoardName, l.type, l.detail, c.title, c.detail))
                         .from(b)
-                        .innerJoin(b.kanbanLists, l)
-                        .innerJoin(l.kanbanCards, c)
+                        .innerJoin(b, l.kanbanBoard)
+                        .innerJoin(l, c.kanbanList)
                         .fetch();
 
         kanbanBoardDtoList.stream().forEach(kanbanBoardDto -> {
