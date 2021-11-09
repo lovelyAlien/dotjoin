@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.modules.toyproject.controller;
 
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
 import com.dangsan.dotjoin.modules.toyproject.service.KanbanBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,20 +15,9 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/subprojects")
+@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subprojectId}")
 public class KanbanController {
     private final KanbanBoardService kanbanBoardService;
-
-
-
-    @GetMapping("/kanbanboards/{kanbanBoardId}")
-    public ResponseEntity<?> inquireKanbanBoard (@PathVariable Long kanbanBoardId) {
-
-
-        List<KanbanCardDto> kanbanCardDtoList= kanbanBoardService.inquireAllKanbanCardDto(kanbanBoardId);
-        return ResponseEntity.ok(kanbanCardDtoList);
-    }
-
 
     @PostMapping("/kanbanboards/{kanbanBoardId}")
     public ResponseEntity<?> registerKanbanCard (@PathVariable Long kanbanBoardId, @RequestBody CardDto cardDto) {
@@ -36,4 +26,25 @@ public class KanbanController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @PutMapping("/kanbanboards/{kanbanBoardId}")
+    public ResponseEntity<?> updateTargetKanbanCard (@PathVariable Long kanbanBoardId, @RequestBody UpdateTargetCardDto updateTargetCardDto) {
+
+        kanbanBoardService.updateTargetKanbanCard(kanbanBoardId, updateTargetCardDto);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+    @PostMapping
+    @GetMapping("/kanbanboards/{kanbanBoardId}")
+    public ResponseEntity<?> inquireTargetKanbanBoard (@PathVariable Long kanbanBoardId) {
+
+
+        List<KanbanCardDto> kanbanCardDtoList= kanbanBoardService.inquireTargetKanbanBoard(kanbanBoardId);
+        return ResponseEntity.ok(kanbanCardDtoList);
+    }
+
+
+
 }

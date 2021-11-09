@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanCard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanList;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanBoardRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -24,7 +26,7 @@ public class KanbanBoardService {
     private final KanbanListRepository kanbanListRepository;
     private final KanbanCardRepository kanbanCardRepository;
 
-    public List<KanbanCardDto> inquireAllKanbanCardDto (Long kanbanBoardId) {
+    public List<KanbanCardDto> inquireTargetKanbanBoard (Long kanbanBoardId) {
         return kanbanBoardRepository.findAllKanbanCardDto(kanbanBoardId);
 
     }
@@ -38,6 +40,21 @@ public class KanbanBoardService {
         kanbanCardRepository.save(kanbanCard);
 
     }
+
+    @Transactional
+    public void updateTargetKanbanCard(Long kanbanBoardId, UpdateTargetCardDto updateTargetCardDto){
+
+        Long kanbanCardId=updateTargetCardDto.getKanbanCardId();
+        Long kanbanListId=updateTargetCardDto.getKanbanListId();
+
+        KanbanCard kanbanCard= kanbanCardRepository.findById(kanbanCardId).get();
+
+        //END_POINT
+
+
+    }
+
+
 
 
 }

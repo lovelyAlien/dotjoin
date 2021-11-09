@@ -29,7 +29,7 @@ public class Question {
     private String title;
 
     @Column
-    private String content;
+    private String detail;
 
     @Column
     private double rate;

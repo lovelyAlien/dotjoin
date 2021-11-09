@@ -29,18 +29,6 @@ public class ToyProjectService {
         subProject.setKanbanBoard(toyProject, kanbanBoard);
         kanbanBoardRepository.save(kanbanBoard);
 
-
-        KanbanList beforeStart=new KanbanList("BEFORE_START");
-        KanbanList inProcess=new KanbanList("IN_PROCESS");
-        KanbanList complete=new KanbanList("COMPLETE");
-        kanbanBoard.addKanbanList(beforeStart);
-        kanbanBoard.addKanbanList(inProcess);
-        kanbanBoard.addKanbanList(complete);
-        kanbanListRepository.save(beforeStart);
-        kanbanListRepository.save(inProcess);
-        kanbanListRepository.save(complete);
-
-
     }
 
 }

@@ -29,15 +29,15 @@ public class KanbanList {
 
 
     @Column
-    private String type;// 할 일, 진행 중, 완료
+    private String title;
 
     @Column
     private String detail;
 
 
 
-    public KanbanList(String type){
-        this.type=type;
+    public KanbanList(String title){
+        this.title=title;
     }
 
     public void addCard(KanbanCard kanbanCard){

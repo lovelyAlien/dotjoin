@@ -25,7 +25,7 @@ public class Answer {
     private Account answerer;
 
     @Column
-    private String content;
+    private String detail;
 
     @OneToMany(mappedBy = "answer")
     private List<AnswerLike> answerLikes = new ArrayList<AnswerLike>();

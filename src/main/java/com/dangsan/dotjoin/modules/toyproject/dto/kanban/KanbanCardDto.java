@@ -10,16 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KanbanCardDto {
 
-    private Long id;
+    private Long kanbanBoardId;
 
     private String kanbanBoardName;
 
-    private String KanbanListTitle;
+    private Long kanbanListId;
 
-    private String KanbanListDetail;
+    private String kanbanListTitle;
 
-    private String KanbanCardTitle;
+    private String kanbanListDetail;
 
-    private String KanbanCardDetail;
+    private String kanbanCardTitle;
+
+    private String kanbanCardDetail;
 
 }

@@ -29,7 +29,7 @@ public class KanbanBoardCustomRepositoryImpl implements KanbanBoardCustomReposit
         QKanbanCard c = kanbanCard;
 
         List<KanbanCardDto> kanbanCardDtoList =
-                jpaQueryFactory.select(Projections.bean(KanbanCardDto.class, b.BoardName, l.type, l.detail, c.title, c.detail))
+                jpaQueryFactory.select(Projections.bean(KanbanCardDto.class, b.id, b.BoardName, l.id, l.title, l.detail, c.title, c.detail))
                         .from(b)
                         .innerJoin(b, l.kanbanBoard)
                         .innerJoin(l, c.kanbanList)

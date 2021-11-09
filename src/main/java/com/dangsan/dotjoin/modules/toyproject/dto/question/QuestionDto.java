@@ -17,7 +17,7 @@ public class QuestionDto {
 
     private Long questionId;
 
-    private String content;
+    private String detail;
 
     private Long questionerId;
 
@@ -27,7 +27,7 @@ public class QuestionDto {
 
     public QuestionDto(Question question){
         this.questionId=question.getId();
-        this.content=question.getContent();
+        this.detail=question.getDetail();
         Account questioner= question.getQuestioner();
         this.questionerId= questioner.getId();
         this.questionerName=questioner.getNickname();

@@ -20,7 +20,7 @@ public class AnswerDto {
 
     private String answererName;
 
-    private String content;
+    private String detail;
 
     private List<AnswerLikeDto> answerLikeDtoList;
 
@@ -28,7 +28,7 @@ public class AnswerDto {
 
     public AnswerDto(Answer answer){
         this.answerId=answer.getId();
-        this.content=answer.getContent();
+        this.detail=answer.getDetail();
         Account answerer=answer.getAnswerer();
         this.answererId=answerer.getId();
         this.answererName=answerer.getNickname();

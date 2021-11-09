@@ -10,12 +10,10 @@ import com.dangsan.dotjoin.modules.toyproject.dto.question.RegisterQuestion;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestion;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProject;
-import com.dangsan.dotjoin.modules.toyproject.service.ToyProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/toyprojects")
 public class ToyProjectController {
 
-    private final ToyProjectService toyProjectService;
     // region 프로젝트 (ToyProject)
     @PostMapping("/")
     public ResponseEntity<?> registerToyProject(@RequestBody RegisterToyProject registerToyProject) {
@@ -55,15 +52,7 @@ public class ToyProjectController {
     }
     // endregion
 
-    // region 단위 프로젝트 (SubProject)
-    @PostMapping("/{projectId}/subprojects/")
-    public ResponseEntity<?> registerSubProject (@PathVariable Long projectId,
-                                                 @RequestBody RegisterSubProject subProjectDto) {
 
-        toyProjectService.registerSubProject(projectId, subProjectDto);
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
 
 
