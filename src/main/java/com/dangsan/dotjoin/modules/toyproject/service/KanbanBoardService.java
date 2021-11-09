@@ -1,7 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanBoardDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanCardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanCard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanList;
@@ -11,6 +11,8 @@ import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -22,24 +24,18 @@ public class KanbanBoardService {
     private final KanbanListRepository kanbanListRepository;
     private final KanbanCardRepository kanbanCardRepository;
 
-    public List<KanbanBoardDto> inquireAllKanbanBoardDto (Long kanbanBoardId) {
-        return kanbanBoardRepository.findAllKanbanBoardDto(kanbanBoardId);
+    public List<KanbanCardDto> inquireAllKanbanCardDto (Long kanbanBoardId) {
+        return kanbanBoardRepository.findAllKanbanCardDto(kanbanBoardId);
 
     }
 
-    public void registerKanbanCards(List<KanbanCardDto> kanbanCardDtoList){
+    public void registerKanbanCard(Long kanbanBoardId, CardDto cardDto){
 
-
-        for(KanbanCardDto kanbanCardDto: kanbanCardDtoList){
-
-            Long kanbanListId= kanbanCardDto.getKanbanListId();
-            KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
-
-            KanbanCard kanbanCard= new KanbanCard(kanbanCardDto);
-            kanbanList.addCard(kanbanCard);
-
-            kanbanCardRepository.save(kanbanCard);
-        }
+        Long kanbanListId= cardDto.getKanbanListId();
+        KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
+        KanbanCard kanbanCard=new KanbanCard(cardDto);
+        kanbanList.addCard(kanbanCard);
+        kanbanCardRepository.save(kanbanCard);
 
     }
 

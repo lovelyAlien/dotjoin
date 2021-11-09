@@ -26,7 +26,7 @@ public class QuestionService {
     private final AnswerLikeRepository answerLikeRepository;
     private final SubProjectRepository subProjectRepository;
 
-    public List<QuestionDto> inquireQuestionDto(Long subProjectId){
+    public List<QuestionDto> inquireAllQuestionDto(Long subProjectId){
         List<QuestionDto> questionDtoList=new ArrayList<>();
 
         SubProject subProject= subProjectRepository.findById(subProjectId).get();

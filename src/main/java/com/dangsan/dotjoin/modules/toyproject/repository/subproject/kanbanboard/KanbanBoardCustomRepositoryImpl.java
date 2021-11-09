@@ -1,7 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard;
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanBoardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.QKanbanBoard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.QKanbanCard;
@@ -17,35 +17,33 @@ import static com.dangsan.dotjoin.modules.toyproject.model.subproject.QKanbanBoa
 import static com.dangsan.dotjoin.modules.toyproject.model.subproject.QKanbanList.kanbanList;
 import static com.dangsan.dotjoin.modules.toyproject.model.subproject.QKanbanCard.kanbanCard;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Slf4j
 public class KanbanBoardCustomRepositoryImpl implements KanbanBoardCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<KanbanBoardDto> findAllKanbanBoardDto(Long kanbanBoardId) {
+    public List<KanbanCardDto> findAllKanbanCardDto(Long kanbanBoardId) {
         QKanbanBoard b = kanbanBoard;
         QKanbanList l = kanbanList;
         QKanbanCard c = kanbanCard;
 
-        List<KanbanBoardDto> kanbanBoardDtoList =
-                jpaQueryFactory.select(Projections.bean(KanbanBoardDto.class, b.BoardName, l.type, l.detail, c.title, c.detail))
+        List<KanbanCardDto> kanbanCardDtoList =
+                jpaQueryFactory.select(Projections.bean(KanbanCardDto.class, b.BoardName, l.type, l.detail, c.title, c.detail))
                         .from(b)
                         .innerJoin(b, l.kanbanBoard)
                         .innerJoin(l, c.kanbanList)
                         .fetch();
 
-        kanbanBoardDtoList.stream().forEach(kanbanBoardDto -> {
-            log.info("member name : " + kanbanBoardDto.getKanbanBoardName());
-            log.info("member age : " + kanbanBoardDto.getKanbanListTitle());
-            log.info("member age : " + kanbanBoardDto.getKanbanListDetail());
-            log.info("member age : " + kanbanBoardDto.getKanbanCardTitle());
-            log.info("member age : " + kanbanBoardDto.getKanbanCardDetail());
+        kanbanCardDtoList.stream().forEach(kanbanCardDto -> {
+            log.info("member name : " + kanbanCardDto.getKanbanBoardName());
+            log.info("member age : " + kanbanCardDto.getKanbanListTitle());
+            log.info("member age : " + kanbanCardDto.getKanbanListDetail());
+            log.info("member age : " + kanbanCardDto.getKanbanCardTitle());
+            log.info("member age : " + kanbanCardDto.getKanbanCardDetail());
         });
 
-        return kanbanBoardDtoList;
+        return kanbanCardDtoList;
 
     }
 }

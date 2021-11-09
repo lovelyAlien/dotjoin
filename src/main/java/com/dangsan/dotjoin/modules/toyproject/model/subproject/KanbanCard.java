@@ -1,7 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanCardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,9 +32,10 @@ public class KanbanCard {
     private String detail;
 
 
-    public KanbanCard(KanbanCardDto kanbanCardDto){
-        this.title=kanbanCardDto.getTitle();
-        this.detail=kanbanCardDto.getDetail();
+    public KanbanCard(CardDto cardDto){
+        this.title=cardDto.getTitle();
+        this.detail=cardDto.getDetail();
+
     }
 
 }

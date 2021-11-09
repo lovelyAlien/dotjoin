@@ -1,4 +1,4 @@
-package com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard;
+package com.dangsan.dotjoin.modules.toyproject.dto.kanban;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KanbanBoardDto {
+public class KanbanCardDto {
 
     private Long id;
 

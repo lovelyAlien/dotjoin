@@ -1,8 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanBoardDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.kanbanboard.KanbanCardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 import com.dangsan.dotjoin.modules.toyproject.service.KanbanBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,15 +24,15 @@ public class KanbanController {
     public ResponseEntity<?> inquireKanbanBoard (@PathVariable Long kanbanBoardId) {
 
 
-        List<KanbanBoardDto> kanbanboardDtoList= kanbanBoardService.inquireAllKanbanBoardDto(kanbanBoardId);
-        return ResponseEntity.ok(kanbanboardDtoList);
+        List<KanbanCardDto> kanbanCardDtoList= kanbanBoardService.inquireAllKanbanCardDto(kanbanBoardId);
+        return ResponseEntity.ok(kanbanCardDtoList);
     }
 
 
     @PostMapping("/kanbanboards/{kanbanBoardId}")
-    public ResponseEntity<?> registerKanbanCards (@PathVariable Long kanbanBoardId, @RequestBody List<KanbanCardDto> kanbanCardDtoList) {
+    public ResponseEntity<?> registerKanbanCard (@PathVariable Long kanbanBoardId, @RequestBody CardDto cardDto) {
 
-        kanbanBoardService.registerKanbanCards(kanbanCardDtoList);
+        kanbanBoardService.registerKanbanCard(kanbanBoardId, cardDto);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
