@@ -1,6 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanban.CardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.RegisterCardDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
 
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
@@ -12,15 +12,13 @@ import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class KanbanBoardService {
+public class KanbanService {
 
     private final KanbanBoardRepository kanbanBoardRepository;
     private final KanbanListRepository kanbanListRepository;
@@ -31,11 +29,11 @@ public class KanbanBoardService {
 
     }
 
-    public void registerKanbanCard(Long kanbanBoardId, CardDto cardDto){
+    public void registerKanbanCard(Long kanbanBoardId, RegisterCardDto registerCardDto){
 
-        Long kanbanListId= cardDto.getKanbanListId();
+        Long kanbanListId= registerCardDto.getKanbanListId();
         KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
-        KanbanCard kanbanCard=new KanbanCard(cardDto);
+        KanbanCard kanbanCard=new KanbanCard(registerCardDto);
         kanbanList.addCard(kanbanCard);
         kanbanCardRepository.save(kanbanCard);
 
@@ -55,6 +53,16 @@ public class KanbanBoardService {
         kanbanCard.update(kanbanList, title, detail);
         kanbanCardRepository.save(kanbanCard);
 
+    }
+
+
+    public KanbanCard inquireTargetKanbanCard(Long kanbanCardId){
+        return kanbanCardRepository.findById(kanbanCardId).get();
+    }
+
+    @Transactional
+    public void deleteTargetKanbanCard(Long kanbanCardId){
+         kanbanCardRepository.deleteById(kanbanCardId);
     }
 
 
