@@ -16,10 +16,8 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     private Question question;
-
 
     @OneToOne
     private Account answerer;

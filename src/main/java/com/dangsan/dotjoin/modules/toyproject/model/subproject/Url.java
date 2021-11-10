@@ -19,5 +19,4 @@ public class Url {
     @Column
     private String url;
 
-
 }

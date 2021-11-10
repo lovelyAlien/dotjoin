@@ -23,44 +23,18 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects")
+@RequestMapping("/api/toyproject")
 public class ToyProjectController {
 
     private final ToyProjectService toyProjectService;
 
-    // region 프로젝트 (ToyProject)
-    @PostMapping("/")
-    public ResponseEntity<?> registerToyProject(@RequestBody RegisterToyProject registerToyProject) {
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<?> inquireAllToyProject() {
-        InquireAllToyProject allToyProject = new InquireAllToyProject();
-
-        return ResponseEntity.ok(allToyProject);
-    }
-
-    @GetMapping("/{projectId}")
+    // region Toy Project 상세 페이지
+    @GetMapping("/{projectId}/intro")
     public ResponseEntity<?> inquireTargetToyProject(@PathVariable String projectId) {
-        InquireTargetToyProject targetToyProject = new InquireTargetToyProject();
+        ToyProjectSimple targetToyProject = new ToyProjectSimple();
 
         return ResponseEntity.ok(targetToyProject);
     }
-
-    @PutMapping("/{projectId}")
-    public ResponseEntity<?> updateTargetToyProject(@PathVariable String projectId,
-                                                    @RequestBody UpdateTargetToyProject targetToyProject) {
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-    // endregion
-
-    // region 메인 페이지
-//    @GetMapping("/main/projectinwork")
-//    public ResponseEntity<?> currentWorkingProject() {
-//        List<ProjectInWork> findProject = toyProjectService.findMyProject();
-//        return ResponseEntity.ok(HttpStatus.OK);
-//    }
     // endregion
 
     // region 단위 프로젝트 (SubProject)
@@ -85,12 +59,6 @@ public class ToyProjectController {
         return ResponseEntity.ok(targetSubProject);
     }
 
-    @PutMapping("/{projectId}/subprojects/{subprojectId}")
-    public ResponseEntity<?> updateTargetSubProject(@PathVariable String projectId,
-                                                    @PathVariable String subprojectId,
-                                                    @RequestBody UpdateTargetToyProject targetSubProject) {
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
     // endregion
 
     // region 단위 프로젝트 회고록 (SubProject Memoir)

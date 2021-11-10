@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
-public class ProjectInWork {
+public class ToyProjectSimple {
 
     private String title;
 
