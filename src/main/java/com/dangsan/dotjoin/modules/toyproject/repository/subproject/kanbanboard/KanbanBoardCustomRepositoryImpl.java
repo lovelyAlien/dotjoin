@@ -36,11 +36,11 @@ public class KanbanBoardCustomRepositoryImpl implements KanbanBoardCustomReposit
                         .fetch();
 
         kanbanCardDtoList.stream().forEach(kanbanCardDto -> {
-            log.info("member name : " + kanbanCardDto.getKanbanBoardName());
-            log.info("member age : " + kanbanCardDto.getKanbanListTitle());
-            log.info("member age : " + kanbanCardDto.getKanbanListDetail());
-            log.info("member age : " + kanbanCardDto.getKanbanCardTitle());
-            log.info("member age : " + kanbanCardDto.getKanbanCardDetail());
+            log.info("kanbanboard name : " + kanbanCardDto.getKanbanBoardName());
+            log.info("kanbanlist title : " + kanbanCardDto.getKanbanListTitle());
+            log.info("kanbanlist detail : " + kanbanCardDto.getKanbanListDetail());
+            log.info("kanbancard title : " + kanbanCardDto.getKanbanCardTitle());
+            log.info("kanbancard detail : " + kanbanCardDto.getKanbanCardDetail());
         });
 
         return kanbanCardDtoList;

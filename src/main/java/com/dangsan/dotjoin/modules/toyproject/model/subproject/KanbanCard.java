@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.RegisterCardDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class KanbanCard {
 
 
     @ManyToOne
+    @JsonIgnore
     private KanbanList kanbanList;
 
 
@@ -37,11 +39,11 @@ public class KanbanCard {
 
     }
 
-    public KanbanCard update(KanbanList kanbanList, String title, String detail){
+    public void update(KanbanList kanbanList, String title, String detail){
         this.kanbanList=kanbanList;
         this.title=title;
         this.detail=detail;
-        return this;
+
     }
 
 

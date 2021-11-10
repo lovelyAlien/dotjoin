@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateTargetCardDto {
-
-    private Long kanbanListId;
+public class RegisterListDto {
 
     private String title;
 

@@ -1,9 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanban.RegisterCardDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.kanban.KanbanCardDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.kanban.*;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
+import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanBoard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanCard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanList;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanBoardRepository;
@@ -24,12 +23,12 @@ public class KanbanService {
     private final KanbanListRepository kanbanListRepository;
     private final KanbanCardRepository kanbanCardRepository;
 
-    public List<KanbanCardDto> inquireTargetKanbanBoard (Long kanbanBoardId) {
-        return kanbanBoardRepository.findAllKanbanCardDto(kanbanBoardId);
-
+    //CRUD of KanbanCard
+    public KanbanCard inquireTargetKanbanCard(Long kanbanCardId){
+        return kanbanCardRepository.findById(kanbanCardId).get();
     }
 
-    public void registerKanbanCard(Long kanbanBoardId, RegisterCardDto registerCardDto){
+    public void registerKanbanCard(RegisterCardDto registerCardDto){
 
         Long kanbanListId= registerCardDto.getKanbanListId();
         KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
@@ -40,9 +39,9 @@ public class KanbanService {
     }
 
     @Transactional
-    public void updateTargetKanbanCard(Long kanbanBoardId, UpdateTargetCardDto updateTargetCardDto){
+    public void updateTargetKanbanCard(Long kanbanCardId, UpdateTargetCardDto updateTargetCardDto){
 
-        Long kanbanCardId=updateTargetCardDto.getKanbanCardId();
+
         Long kanbanListId=updateTargetCardDto.getKanbanListId();
         String title=updateTargetCardDto.getTitle();
         String detail=updateTargetCardDto.getDetail();
@@ -55,17 +54,58 @@ public class KanbanService {
 
     }
 
+    @Transactional
+    public void deleteTargetKanbanCard(Long kanbanCardId){
 
-    public KanbanCard inquireTargetKanbanCard(Long kanbanCardId){
-        return kanbanCardRepository.findById(kanbanCardId).get();
+        kanbanCardRepository.deleteById(kanbanCardId);
+    }
+
+    //CRUD of KanbanList
+    public KanbanList inquireTargetKanbanList(Long kanbanListId){
+        return kanbanListRepository.findById(kanbanListId).get();
+    }
+
+    public void registerKanbanList(Long kanbanBoardId, RegisterListDto registerListDto){
+
+        KanbanBoard kanbanBoard=kanbanBoardRepository.getById(kanbanBoardId);
+
+        KanbanList kanbanList=new KanbanList(registerListDto);
+
+        kanbanBoard.addKanbanList(kanbanList);
+
+        kanbanListRepository.save(kanbanList);
+
+
     }
 
     @Transactional
-    public void deleteTargetKanbanCard(Long kanbanCardId){
-         kanbanCardRepository.deleteById(kanbanCardId);
+    public void updateTargetKanbanList(Long kanbanListId, UpdateTargetListDto updateTargetListDto){
+
+
+        KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
+
+        kanbanList.update(updateTargetListDto);
+
+        kanbanListRepository.save(kanbanList);
+    }
+
+    @Transactional
+    public void deleteTargetKanbanList(Long kanbanListId){
+
+        kanbanListRepository.deleteById(kanbanListId);
+
     }
 
 
+
+
+
+
+
+    public List<KanbanCardDto> inquireTargetKanbanBoard (Long kanbanBoardId) {
+        return kanbanBoardRepository.findAllKanbanCardDto(kanbanBoardId);
+
+    }
 
 
 }
