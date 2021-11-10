@@ -46,11 +46,14 @@ public class KanbanBoardService {
 
         Long kanbanCardId=updateTargetCardDto.getKanbanCardId();
         Long kanbanListId=updateTargetCardDto.getKanbanListId();
-
+        String title=updateTargetCardDto.getTitle();
+        String detail=updateTargetCardDto.getDetail();
         KanbanCard kanbanCard= kanbanCardRepository.findById(kanbanCardId).get();
+        KanbanList kanbanList=kanbanListRepository.findById(kanbanListId).get();
 
-        //END_POINT
 
+        kanbanCard.update(kanbanList, title, detail);
+        kanbanCardRepository.save(kanbanCard);
 
     }
 

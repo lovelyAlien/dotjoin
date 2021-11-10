@@ -45,4 +45,5 @@ public class KanbanList {
         this.kanbanCards.add(kanbanCard);
 
     }
+
 }

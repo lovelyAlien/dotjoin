@@ -19,6 +19,8 @@ import java.util.List;
 public class KanbanController {
     private final KanbanBoardService kanbanBoardService;
 
+
+
     @PostMapping("/kanbanboards/{kanbanBoardId}")
     public ResponseEntity<?> registerKanbanCard (@PathVariable Long kanbanBoardId, @RequestBody CardDto cardDto) {
 
@@ -26,6 +28,9 @@ public class KanbanController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
+
 
     @PutMapping("/kanbanboards/{kanbanBoardId}")
     public ResponseEntity<?> updateTargetKanbanCard (@PathVariable Long kanbanBoardId, @RequestBody UpdateTargetCardDto updateTargetCardDto) {

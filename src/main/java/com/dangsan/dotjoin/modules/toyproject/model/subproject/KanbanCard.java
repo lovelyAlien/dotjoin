@@ -39,6 +39,13 @@ public class KanbanCard {
 
     }
 
+    public KanbanCard update(KanbanList kanbanList, String title, String detail){
+        this.kanbanList=kanbanList;
+        this.title=title;
+        this.detail=detail;
+        return this;
+    }
+
 
 
 }
