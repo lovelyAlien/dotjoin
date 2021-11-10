@@ -31,21 +31,8 @@ public class SubProjectController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    //END_POINT
 
-//    @GetMapping("/{subProjectId}")
-//    public ResponseEntity<?> inquireAllMemoirDto (@PathVariable Long subProjectId) {
-//
-//
-//        return ResponseEntity.ok(null);
-//    }
-//
-//    @GetMapping("/{subProjectId}")
-//    public ResponseEntity<?> inquireAllQuestionDto (@PathVariable Long subProjectId) {
-//
-//
-//        List<QuestionDto> questionDtoList= questionService.inquireAllQuestionDto(subProjectId);
-//        return ResponseEntity.ok(questionDtoList);
-//    }
 
 
 
