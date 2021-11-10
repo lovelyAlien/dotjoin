@@ -45,16 +45,16 @@ public class SubProject extends Timestamped {
     @Column
     private LocalDate realEnd;
 
-    @OneToOne(mappedBy ="subProject")
+    @OneToOne(mappedBy ="subProject", orphanRemoval = true)
     private KanbanBoard kanbanBoard;
 
-    @OneToMany(mappedBy = "subProject")
+    @OneToMany(mappedBy = "subProject", orphanRemoval = true)
     private List<SubProjectRate> projectRates = new ArrayList<SubProjectRate>();
 
-    @OneToMany(mappedBy = "subProject")
+    @OneToMany(mappedBy = "subProject", orphanRemoval = true)
     private List<Question> projectQuestions = new ArrayList<Question>();
 
-    @OneToMany(mappedBy = "subProject")
+    @OneToMany(mappedBy = "subProject", orphanRemoval = true)
     private List<Memoir> projectMemoirs = new ArrayList<Memoir>();
 
     public SubProject(ToyProject toyProject, RegisterSubProject registerDto){
@@ -63,11 +63,6 @@ public class SubProject extends Timestamped {
         this.expectedWork=registerDto.getExpectedWork();
     }
 
-
-    public void setKanbanBoard(ToyProject toyProject, KanbanBoard kanbanBoard){
-        kanbanBoard.setToyProjectAndSubProject(toyProject, this);
-        this.setKanbanBoard(kanbanBoard);
-    }
 
 
 }

@@ -25,9 +25,6 @@ public class ToyProjectService {
         SubProject subProject= new SubProject(toyProject, subProjectDto);
         subProjectRepository.save(subProject);
 
-        KanbanBoard kanbanBoard=new KanbanBoard();
-        subProject.setKanbanBoard(toyProject, kanbanBoard);
-        kanbanBoardRepository.save(kanbanBoard);
 
     }
 

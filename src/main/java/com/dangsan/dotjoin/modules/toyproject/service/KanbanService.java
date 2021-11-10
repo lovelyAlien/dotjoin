@@ -5,6 +5,8 @@ import com.dangsan.dotjoin.modules.toyproject.dto.kanban.*;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanBoard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanCard;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.KanbanList;
+import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
+import com.dangsan.dotjoin.modules.toyproject.repository.subproject.SubProjectRepository;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanBoardRepository;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanCardRepository;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanListRepository;
@@ -13,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class KanbanService {
     private final KanbanBoardRepository kanbanBoardRepository;
     private final KanbanListRepository kanbanListRepository;
     private final KanbanCardRepository kanbanCardRepository;
+    private final SubProjectRepository subProjectRepository;
 
     //CRUD of KanbanCard
     public KanbanCard inquireTargetKanbanCard(Long kanbanCardId){
@@ -97,13 +99,44 @@ public class KanbanService {
     }
 
 
+    //CRUD of KanbanBoard
+
+    public InquireTargetBoardDto inquireTargetKanbanBoard (Long kanbanBoardId) {
+
+        KanbanBoard kanbanBoard=kanbanBoardRepository.findById(kanbanBoardId).get();
+
+        InquireTargetBoardDto inquireTargetBoardDto = new InquireTargetBoardDto(kanbanBoard);
+
+        return inquireTargetBoardDto;
+
+    }
+
+    public void registerKanbanBoard(Long subProjectId, String boardName){
+
+        SubProject subProject= subProjectRepository.findById(subProjectId).get();
 
 
+        KanbanBoard kanbanBoard= new KanbanBoard(subProject, boardName);
+
+        kanbanBoardRepository.save(kanbanBoard);
+
+    }
+
+    @Transactional
+    public void updateTargetKanbanBoard(Long kanbanBoardId, String boardName){
+
+        KanbanBoard kanbanBoard=kanbanBoardRepository.findById(kanbanBoardId).get();
+
+        kanbanBoard.setBoardName(boardName);
+
+        kanbanBoardRepository.save(kanbanBoard);
+    }
 
 
+    @Transactional
+    public void deleteTargetKanbanBoard(Long kanbanBoardId){
 
-    public List<KanbanCardDto> inquireTargetKanbanBoard (Long kanbanBoardId) {
-        return kanbanBoardRepository.findAllKanbanCardDto(kanbanBoardId);
+        kanbanBoardRepository.deleteById(kanbanBoardId);
 
     }
 

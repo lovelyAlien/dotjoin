@@ -29,7 +29,6 @@ public class KanbanList {
 
 
     @OneToMany(mappedBy = "kanbanList", orphanRemoval = true)
-    @JsonIgnore
     private List<KanbanCard> kanbanCards=new ArrayList<KanbanCard>();
 
 

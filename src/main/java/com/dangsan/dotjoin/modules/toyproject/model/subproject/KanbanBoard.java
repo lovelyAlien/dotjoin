@@ -1,7 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 
-import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,28 +21,29 @@ public class KanbanBoard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private ToyProject toyProject;
 
     @OneToOne
+    @JsonIgnore
     private SubProject subProject;
 
-    @OneToMany(mappedBy="kanbanBoard")
+    @OneToMany(mappedBy="kanbanBoard", orphanRemoval = true)
     private List<KanbanList> kanbanLists=new ArrayList<KanbanList>();
 
     @Column
-    private String BoardName;
+    private String boardName;
 
-
-    public void setToyProjectAndSubProject(ToyProject toyProject, SubProject subProject){
-        this.toyProject= toyProject;
-        this.subProject=subProject;
-    }
 
     public void addKanbanList(KanbanList kanbanList){
         kanbanList.setKanbanBoard(this);
         this.kanbanLists.add(kanbanList);
     }
+
+    public KanbanBoard(SubProject subProject, String boarName){
+        this.subProject=subProject;
+        this.boardName=boarName;
+
+    }
+
 
 
 

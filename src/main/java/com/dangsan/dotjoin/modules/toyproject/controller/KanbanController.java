@@ -11,11 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subprojectId}")
+@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
 public class KanbanController {
     private final KanbanService kanbanService;
 
@@ -90,9 +88,41 @@ public class KanbanController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+
+
     //CRUD of KanbanBoard
 
+    @GetMapping("/kanbanboards/{kanbanBoardId}")
+    public ResponseEntity<?> inquireTargetKanbanBoard (@PathVariable Long kanbanBoardId) {
 
+        InquireTargetBoardDto inquireTargetBoardDto = kanbanService.inquireTargetKanbanBoard(kanbanBoardId);
+        return ResponseEntity.ok(inquireTargetBoardDto);
+    }
+
+
+    @PostMapping("/kanbanboards")
+    public ResponseEntity<?> registerKanbanBoard (@PathVariable Long subProjectId, @RequestBody String boardName) {
+
+        kanbanService.registerKanbanBoard(subProjectId, boardName);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/kanbanboards/{kanbanBoardId}")
+    public ResponseEntity<?> updateTargetKanbanList (@PathVariable Long kanbanBoardId, @RequestBody String boardName) {
+
+        kanbanService.updateTargetKanbanBoard(kanbanBoardId, boardName);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/kanbanboards/{kanbanBoardId}")
+    public ResponseEntity<?> deleteTargetKanbanBoard (@PathVariable Long kanbanBoardId) {
+
+        kanbanService.deleteTargetKanbanBoard(kanbanBoardId);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
 
 }
