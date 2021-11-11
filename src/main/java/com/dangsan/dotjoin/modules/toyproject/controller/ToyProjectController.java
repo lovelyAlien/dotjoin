@@ -9,7 +9,7 @@ import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireTargetQuestion
 import com.dangsan.dotjoin.modules.toyproject.dto.question.RegisterQuestion;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProject;
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProject;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProject;
@@ -69,7 +69,7 @@ public class ToyProjectController {
     @GetMapping("/{projectId}/subprojects/{subprojectId}")
     public ResponseEntity<?> inquireTargetSubProject(@PathVariable String projectId,
                                                      @PathVariable String subprojectId) {
-        InquireTargetSubProject targetSubProject = new InquireTargetSubProject();
+        InquireTargetSubProjectDto targetSubProject = new InquireTargetSubProjectDto();
 
         return ResponseEntity.ok(targetSubProject);
     }

@@ -23,5 +23,8 @@ public class Url {
     @Column
     private String url;
 
+    @ManyToOne
+    private Memoir memoir;
+
 
 }

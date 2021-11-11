@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterSubProject {
+public class RegisterSubProjectDto {
 
     private String title;
 

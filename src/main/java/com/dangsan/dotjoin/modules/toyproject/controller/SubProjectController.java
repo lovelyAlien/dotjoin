@@ -2,8 +2,11 @@ package com.dangsan.dotjoin.modules.toyproject.controller;
 
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
-import com.dangsan.dotjoin.modules.toyproject.service.ToyProjectService;
+import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProjectDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProjectDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.UpdateTargetSubProjectDto;
+import com.dangsan.dotjoin.modules.toyproject.service.SubProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,22 +15,41 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects")
+@RequestMapping("/api/toyprojects/{projectId}")
 public class SubProjectController {
+    private final SubProjectService subProjectService;
 
-    private final ToyProjectService toyProjectService;
+    @GetMapping("/subprojects/{subProjectId}")
+    public ResponseEntity<?> inquireTargetSubProject (@PathVariable Long projectId, @PathVariable Long subProjectId) {
 
-    // region 단위 프로젝트 (SubProject)
-    @PostMapping("/")
+        InquireTargetSubProjectDto inquireTargetSubProjectDto= subProjectService.inquireTargetSubProject(projectId, subProjectId);
+
+        return ResponseEntity.ok(inquireTargetSubProjectDto);
+    }
+
+    @PostMapping("/subprojects")
     public ResponseEntity<?> registerSubProject (@PathVariable Long projectId,
-                                                 @RequestBody RegisterSubProject subProjectDto) {
+                                                 @RequestBody RegisterSubProjectDto registerSubProjectDto) {
 
-        toyProjectService.registerSubProject(projectId, subProjectDto);
+        subProjectService.registerSubProject(projectId, registerSubProjectDto);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    //END_POINT
 
+
+    @PutMapping("/subprojects/{subProjectId}")
+    public ResponseEntity<?> updateTargetQuestion (@PathVariable Long subProjectId, @RequestBody UpdateTargetSubProjectDto updateTargetSubProjectDto) {
+
+        subProjectService.updateTargetSubProject(subProjectId, updateTargetSubProjectDto);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/subprojects/{subProjectId}")
+    public ResponseEntity<?> deleteTargetQuestion (@PathVariable Long subProjectId) {
+
+        subProjectService.deleteTargetSubProject(subProjectId);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
 
 

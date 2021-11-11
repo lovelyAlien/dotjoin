@@ -38,7 +38,7 @@ public class Memoir {
     @Column
     private String whyReason;
 
-    @OneToMany
+    @OneToMany(mappedBy = "memoir", orphanRemoval = true)
     private List<Url> url;
 
     @Column

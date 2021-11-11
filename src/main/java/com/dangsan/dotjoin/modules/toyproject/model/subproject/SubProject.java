@@ -1,7 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 import com.dangsan.dotjoin.modules.Timestamped;
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProject;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProjectDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.UpdateTargetSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,12 +58,22 @@ public class SubProject extends Timestamped {
     @OneToMany(mappedBy = "subProject", orphanRemoval = true)
     private List<Memoir> projectMemoirs = new ArrayList<Memoir>();
 
-    public SubProject(ToyProject toyProject, RegisterSubProject registerDto){
+    public SubProject(ToyProject toyProject, RegisterSubProjectDto registerDto){
         this.toyProject=toyProject;
         this.title=registerDto.getTitle();
         this.expectedWork=registerDto.getExpectedWork();
     }
 
+    public void update(UpdateTargetSubProjectDto updateTargetSubProjectDto){
+        this.title=updateTargetSubProjectDto.getTitle();
+        this.expectedWork=updateTargetSubProjectDto.getExpectedWork();
+        this.realWork=updateTargetSubProjectDto.getRealWork();
+        this.planStart=updateTargetSubProjectDto.getPlanStart();
+        this.planEnd=updateTargetSubProjectDto.getPlanEnd();
+        this.realStart=updateTargetSubProjectDto.getRealStart();
+        this.realEnd=updateTargetSubProjectDto.getRealEnd();
+
+    }
 
 
 }
