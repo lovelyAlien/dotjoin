@@ -31,7 +31,7 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class AccountController {
     private final AccountService accountService;
     private final TokenProvider tokenProvider;
@@ -107,7 +107,7 @@ public class AccountController {
 //    }
 
 
-    @GetMapping("/user")
+    @GetMapping("/info")
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(user, HttpStatus.OK);

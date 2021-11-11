@@ -9,31 +9,29 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerDto {
+@Data
+public class InquireTargetAnswerDto {
+
+    private Long questionId;
 
     private Long answerId;
 
     private AnswererDto answererDto;
 
-    private List<AnswerLikeDto> answerLikeDtoList=new ArrayList<>();
-
     private String detail;
 
-    public AnswerDto(Answer answer){
-        this.answerId=answer.getId();
-        this.detail=answer.getDetail();
+    private List<AnswerLikeDto> answerLikeDtoList=new ArrayList<>();
 
+    public InquireTargetAnswerDto(Long questionId, Answer answer){
+        this.questionId=questionId;
+        this.answerId=answer.getId();
         this.answererDto=new AnswererDto(answer.getAnswerer());
 
         for(AnswerLike answerLike: answer.getAnswerLikes()){
-            AnswerLikeDto answerLikeDto=new AnswerLikeDto(answerLike);
-            answerLikeDtoList.add(answerLikeDto);
+            this.answerLikeDtoList.add(new AnswerLikeDto(answerLike));
         }
-
     }
-
 
 }

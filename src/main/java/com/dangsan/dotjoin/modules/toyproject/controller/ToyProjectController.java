@@ -5,9 +5,9 @@ import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoir;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.RegisterMemoir;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoir;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireAllQuestion;
-import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireTargetQuestion;
+import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireTargetQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.RegisterQuestion;
-import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestion;
+import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProject;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProject;
@@ -136,7 +136,7 @@ public class ToyProjectController {
     public ResponseEntity<?> inquireTargetQuestion(@PathVariable String projectId,
                                                  @PathVariable String subprojectId,
                                                  @PathVariable String questionId) {
-        InquireTargetQuestion targetQuestion = new InquireTargetQuestion();
+        InquireTargetQuestionDto targetQuestion = new InquireTargetQuestionDto();
 
         return ResponseEntity.ok(targetQuestion);
     }
@@ -145,7 +145,7 @@ public class ToyProjectController {
     public ResponseEntity<?> updateTargetQuestion(@PathVariable String projectId,
                                                 @PathVariable String subprojectId,
                                                 @PathVariable String questionId,
-                                                @RequestBody UpdateTargetQuestion targetQuestion) {
+                                                @RequestBody UpdateTargetQuestionDto targetQuestion) {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     // endregion

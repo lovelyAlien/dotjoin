@@ -11,23 +11,17 @@ import lombok.NoArgsConstructor;
 @Data
 public class AnswerLikeDto {
 
-
-    private Long answerLikeId;
-
     private Long raterId;
 
-    private String raterName;
+    private String raterNickName;
 
     private double rate;
 
-
     public AnswerLikeDto(AnswerLike answerLike){
-        this.answerLikeId= answerLike.getId();
-        this.rate=answerLike.getRate();
         Account rater=answerLike.getRater();
         this.raterId=rater.getId();
-        this.raterName=rater.getNickname();
-
+        this.raterNickName=rater.getNickname();
+        this.rate=answerLike.getRate();
     }
 
 }

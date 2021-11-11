@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        ,"/error"
 //                )
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+
     }
 
     @Override
@@ -65,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/user/sign-up", "/api/user/login").permitAll()
                 .antMatchers("/api/user/**").authenticated()
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')")
@@ -85,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
 
-
     }
+
+
 }
