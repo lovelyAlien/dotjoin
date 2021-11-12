@@ -44,6 +44,8 @@ public class JwtFilter extends GenericFilterBean {
 
         } else {
 
+            System.out.println("현 위치: JwtFilter");
+
             log.info("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
         }
 

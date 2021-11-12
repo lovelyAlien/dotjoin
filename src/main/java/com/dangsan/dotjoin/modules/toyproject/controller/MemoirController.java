@@ -1,9 +1,9 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoir;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoir;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.RegisterMemoir;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoir;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.RegisterMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +13,14 @@ public class MemoirController {
     @PostMapping("/{projectId}/subprojects/{subprojectId}/memoirs/")
     public ResponseEntity<?> registerMemoir (@PathVariable String projectId,
                                              @PathVariable String subprojectId,
-                                             @RequestBody RegisterMemoir memoir) {
+                                             @RequestBody RegisterMemoirDto memoir) {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}/subprojects/{subprojectId}/memoirs/")
     public ResponseEntity<?> inquireAllMemoir (@PathVariable String projectId,
                                                @PathVariable String subprojectId) {
-        InquireAllMemoir allMemoir = new InquireAllMemoir();
+        InquireAllMemoirDto allMemoir = new InquireAllMemoirDto();
 
         return ResponseEntity.ok(allMemoir);
     }
@@ -29,7 +29,7 @@ public class MemoirController {
     public ResponseEntity<?> inquireTargetMemoir(@PathVariable String projectId,
                                                  @PathVariable String subprojectId,
                                                  @PathVariable String memoirId) {
-        InquireTargetMemoir targetMemoir = new InquireTargetMemoir();
+        InquireTargetMemoirDto targetMemoir = new InquireTargetMemoirDto();
 
         return ResponseEntity.ok(targetMemoir);
     }
@@ -38,7 +38,7 @@ public class MemoirController {
     public ResponseEntity<?> updateTargetMemoir(@PathVariable String projectId,
                                                 @PathVariable String subprojectId,
                                                 @PathVariable String memoirId,
-                                                @RequestBody UpdateTargetMemoir targetMemoir) {
+                                                @RequestBody UpdateTargetMemoirDto targetMemoir) {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

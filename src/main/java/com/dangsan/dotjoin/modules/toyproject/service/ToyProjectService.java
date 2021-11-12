@@ -14,6 +14,7 @@ import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -23,8 +24,13 @@ public class ToyProjectService {
     private final SubProjectRepository subProjectRepository;
 
     public InquireTargetToyProjectDto inquireTargetToyProject(Long projectId){
+        System.out.println("projectId: "+ projectId);
+        System.out.println("현 위치: ToyProjectService");
+
         ToyProject toyProject= toyProjectRepository.findById(projectId).get(); //.get()의 경우 결과값이 null일 경우 NoSuchElementException 발생
 
+        System.out.println("Get Toyproject object");
+        System.out.println(toyProject.toString());
         InquireTargetToyProjectDto inquireTargetToyProjectDto= new InquireTargetToyProjectDto(toyProject);
 
         return inquireTargetToyProjectDto;
@@ -41,14 +47,14 @@ public class ToyProjectService {
         toyProjectRepository.save(toyProject);
 
     }
-
+    @Transactional
     public void updateTargetToyProject(Long projectId, UpdateTargetToyProjectDto targetToyProjectDto){
         ToyProject toyProject=toyProjectRepository.findById(projectId).get();
         toyProject.update(targetToyProjectDto);
         toyProjectRepository.save(toyProject);
 
     }
-
+    @Transactional
     public void deleteTargetToyProject(Long projectId){
         toyProjectRepository.deleteById(projectId);
     }

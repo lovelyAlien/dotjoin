@@ -30,13 +30,15 @@ public class KanbanService {
         return kanbanCardRepository.findById(kanbanCardId).get();
     }
 
-    public void registerKanbanCard(RegisterCardDto registerCardDto){
+    public Long registerKanbanCard(RegisterCardDto registerCardDto){
 
         Long kanbanListId= registerCardDto.getKanbanListId();
         KanbanList kanbanList= kanbanListRepository.findById(kanbanListId).get();
         KanbanCard kanbanCard=new KanbanCard(registerCardDto);
         kanbanList.addCard(kanbanCard);
         kanbanCardRepository.save(kanbanCard);
+
+        return kanbanCard.getId();
 
     }
 
@@ -67,7 +69,7 @@ public class KanbanService {
         return kanbanListRepository.findById(kanbanListId).get();
     }
 
-    public void registerKanbanList(Long kanbanBoardId, RegisterListDto registerListDto){
+    public Long registerKanbanList(Long kanbanBoardId, RegisterListDto registerListDto){
 
         KanbanBoard kanbanBoard=kanbanBoardRepository.getById(kanbanBoardId);
 
@@ -77,7 +79,7 @@ public class KanbanService {
 
         kanbanListRepository.save(kanbanList);
 
-
+        return kanbanList.getId();
     }
 
     @Transactional
@@ -111,14 +113,16 @@ public class KanbanService {
 
     }
 
-    public void registerKanbanBoard(Long subProjectId, String boardName){
+    public Long registerKanbanBoard(Long subProjectId, String boardName){
 
         SubProject subProject= subProjectRepository.findById(subProjectId).get();
 
 
-        KanbanBoard kanbanBoard= new KanbanBoard(subProject, boardName);
+        KanbanBoard kanbanBoard= kanbanBoardRepository.save(new KanbanBoard(subProject, boardName));
 
-        kanbanBoardRepository.save(kanbanBoard);
+        return kanbanBoard.getId();
+
+
 
     }
 

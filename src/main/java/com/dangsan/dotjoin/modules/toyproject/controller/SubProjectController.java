@@ -28,7 +28,7 @@ public class SubProjectController {
         return ResponseEntity.ok(inquireTargetSubProjectDto);
     }
 
-    @GetMapping("/subprojects/")
+    @GetMapping("/subprojects")
     public ResponseEntity<?> inquireAllSubProject (@PathVariable String projectId) {
         InquireAllSubProject allSubProject = new InquireAllSubProject();
 

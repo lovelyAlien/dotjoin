@@ -5,6 +5,7 @@ import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProjectD
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class ToyProject {
 
     @Id
@@ -24,7 +26,7 @@ public class ToyProject {
     private String title;
 
     @Column
-    private String shotDescription;
+    private String shortDescription;
 
     @Column
     private String fullDescription;
@@ -57,14 +59,14 @@ public class ToyProject {
 
     public ToyProject(RegisterToyProjectDto registerToyProjectDto){
         this.title=registerToyProjectDto.getTitle();
-        this.shotDescription=registerToyProjectDto.getShotDescription();
+        this.shortDescription=registerToyProjectDto.getShortDescription();
         this.fullDescription=registerToyProjectDto.getFullDescription();
     }
 
     public void update(UpdateTargetToyProjectDto updateTargetToyProjectDto){
 
         this.title= updateTargetToyProjectDto.getTitle();
-        this.shotDescription=updateTargetToyProjectDto.getShotDescription();
+        this.shortDescription=updateTargetToyProjectDto.getShortDescription();
         this.fullDescription=updateTargetToyProjectDto.getFullDescription();
         this.projectStart=updateTargetToyProjectDto.getProjectStart();
         this.projectEnd=updateTargetToyProjectDto.getProjectEnd();

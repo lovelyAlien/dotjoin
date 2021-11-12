@@ -22,7 +22,7 @@ public class UpdateTargetToyProjectDto {
     private String title;
 
 
-    private String shotDescription;
+    private String shortDescription;
 
 
     private String fullDescription;

@@ -19,7 +19,7 @@ public class KanbanController {
 
 
     //CRUD of KanbanCard
-    @GetMapping("/kanbancards/{kanbanCardId}")
+    @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards/{kanbanCardId}")
     public ResponseEntity<?> inquireTargetKanbanCard (@PathVariable Long kanbanCardId) {
 
         KanbanCard kanbanCard= kanbanService.inquireTargetKanbanCard(kanbanCardId);
@@ -28,16 +28,16 @@ public class KanbanController {
     }
 
 
-    @PostMapping("/kanbancards")
+    @PostMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards")
     public ResponseEntity<?> registerKanbanCard (@RequestBody RegisterCardDto registerCardDto) {
 
-        kanbanService.registerKanbanCard(registerCardDto);
+        Long kanbanCardId= kanbanService.registerKanbanCard(registerCardDto);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(kanbanCardId);
     }
 
 
-    @PutMapping("/kanbancards/{kanbanCardId}")
+    @PutMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards/{kanbanCardId}")
     public ResponseEntity<?> updateTargetKanbanCard (@PathVariable Long kanbanCardId, @RequestBody UpdateTargetCardDto updateTargetCardDto) {
 
         kanbanService.updateTargetKanbanCard(kanbanCardId, updateTargetCardDto);
@@ -45,7 +45,7 @@ public class KanbanController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/kanbancards/{kanbanCardId}")
+    @DeleteMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards/{kanbanCardId}")
     public ResponseEntity<?> deleteTargetKanbanCard (@PathVariable Long kanbanCardId) {
 
         kanbanService.deleteTargetKanbanCard(kanbanCardId);
@@ -55,7 +55,7 @@ public class KanbanController {
 
 
     //CRUD of KanbanList
-    @GetMapping("/kanbanlists/{kanbanListId}")
+    @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}")
     public ResponseEntity<?> inquireTargetKanbanList (@PathVariable Long kanbanListId) {
 
         KanbanList kanbanList= kanbanService.inquireTargetKanbanList(kanbanListId);
@@ -66,13 +66,13 @@ public class KanbanController {
     @PostMapping("/kanbanboards/{kanbanBoardId}/kanbanlists")
     public ResponseEntity<?> registerKanbanList (@PathVariable Long kanbanBoardId, @RequestBody RegisterListDto registerListDto) {
 
-        kanbanService.registerKanbanList(kanbanBoardId, registerListDto);
+        Long kanbanListId= kanbanService.registerKanbanList(kanbanBoardId, registerListDto);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(kanbanListId);
 
     }
 
-    @PutMapping("/kanbanlists/{kanbanListId}")
+    @PutMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}")
     public ResponseEntity<?> updateTargetKanbanList (@PathVariable Long kanbanListId, @RequestBody UpdateTargetListDto updateTargetListDto) {
 
         kanbanService.updateTargetKanbanList(kanbanListId, updateTargetListDto);
@@ -80,7 +80,7 @@ public class KanbanController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/kanbanlists/{kanbanListId}")
+    @DeleteMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}")
     public ResponseEntity<?> deleteTargetKanbanList (@PathVariable Long kanbanListId) {
 
         kanbanService.deleteTargetKanbanList(kanbanListId);
@@ -103,9 +103,9 @@ public class KanbanController {
     @PostMapping("/kanbanboards")
     public ResponseEntity<?> registerKanbanBoard (@PathVariable Long subProjectId, @RequestBody String boardName) {
 
-        kanbanService.registerKanbanBoard(subProjectId, boardName);
+        Long kanbanBoardId= kanbanService.registerKanbanBoard(subProjectId, boardName);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(kanbanBoardId);
     }
 
     @PutMapping("/kanbanboards/{kanbanBoardId}")

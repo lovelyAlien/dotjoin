@@ -32,13 +32,13 @@ public class QuestionService {
 
     }
 
-    public void registerQuestion(Long subProjectId, User user){
+    public Long registerQuestion(Long subProjectId, User user){
         SubProject subProject=subProjectRepository.findById(subProjectId).get();
         Account questioner=accountRepository.findByEmail(user.getUsername());
 
-        Question question= new Question(subProject, questioner);
+        Question question= questionRepository.save(new Question(subProject, questioner));
 
-        questionRepository.save(question);
+        return question.getId();
 
     }
 

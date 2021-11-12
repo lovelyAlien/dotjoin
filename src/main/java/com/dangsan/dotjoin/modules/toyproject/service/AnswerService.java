@@ -34,13 +34,15 @@ public class AnswerService {
     }
 
 
-    public void registerAnswer(Long questionId, User user){
+    public Long registerAnswer(Long questionId, User user){
         Question question= questionRepository.findById(questionId).get();
         Account answerer= accountRepository.findByEmail(user.getUsername());
 
-        Answer answer= new Answer(question, answerer);
+        Answer answer= answerRepository.save(new Answer(question, answerer));
 
-        answerRepository.save(answer);
+        return answer.getId();
+
+
     }
 
     @Transactional

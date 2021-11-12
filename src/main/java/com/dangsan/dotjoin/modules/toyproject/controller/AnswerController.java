@@ -29,8 +29,8 @@ public class AnswerController {
 
     @PostMapping("/answers")
     public ResponseEntity<?> registerAnswer (@PathVariable Long questionId, @AuthenticationPrincipal User user) {
-        answerService.registerAnswer(questionId, user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        Long answerId= answerService.registerAnswer(questionId, user);
+        return ResponseEntity.ok(answerId);
     }
 
     @PutMapping("/answers/{answerId}")

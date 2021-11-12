@@ -24,7 +24,7 @@ public class InquireTargetToyProjectDto {
 
     private String title;
 
-    private String shotDescription;
+    private String shortDescription;
 
     private String fullDescription;
 
@@ -45,7 +45,7 @@ public class InquireTargetToyProjectDto {
 
         this.title=toyProject.getTitle();
 
-        this.shotDescription=toyProject.getShotDescription();
+        this.shortDescription=toyProject.getShortDescription();
 
         this.fullDescription=toyProject.getFullDescription();
 

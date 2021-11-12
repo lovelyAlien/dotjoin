@@ -19,7 +19,7 @@ public class RegisterToyProjectDto {
 
     private String title;
 
-    private String shotDescription;
+    private String shortDescription;
 
     private String fullDescription;
 

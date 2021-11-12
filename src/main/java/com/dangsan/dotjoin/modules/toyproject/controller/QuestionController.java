@@ -29,7 +29,7 @@ public class QuestionController {
         return ResponseEntity.ok(inquireTargetQuestionDto);
     }
 
-    @GetMapping("/{projectId}/subprojects/{subprojectId}/questions/")
+    @GetMapping("/questions")
     public ResponseEntity<?> inquireAllQuestion (@PathVariable String projectId,
                                                  @PathVariable String subprojectId) {
         InquireAllQuestion allQuestion = new InquireAllQuestion();
@@ -39,8 +39,8 @@ public class QuestionController {
 
     @PostMapping("/questions")
     public ResponseEntity<?> registerQuestion (@PathVariable Long subProjectId, @AuthenticationPrincipal User user) {
-        questionService.registerQuestion(subProjectId, user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        Long questionId= questionService.registerQuestion(subProjectId, user);
+        return ResponseEntity.ok(questionId);
     }
 
 

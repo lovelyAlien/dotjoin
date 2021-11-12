@@ -28,6 +28,7 @@ public class InquireTargetAnswerDto {
         this.questionId=questionId;
         this.answerId=answer.getId();
         this.answererDto=new AnswererDto(answer.getAnswerer());
+        this.detail=answer.getDetail();
 
         for(AnswerLike answerLike: answer.getAnswerLikes()){
             this.answerLikeDtoList.add(new AnswerLikeDto(answerLike));
