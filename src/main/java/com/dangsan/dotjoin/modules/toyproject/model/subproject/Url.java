@@ -26,5 +26,4 @@ public class Url {
     @ManyToOne
     private Memoir memoir;
 
-
 }

@@ -1,6 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.model;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProjectDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,4 +54,21 @@ public class ToyProject {
 
     @OneToMany(mappedBy = "toyProject")
     private List<ToyProjectRate> projectRates = new ArrayList<ToyProjectRate>();
+
+    public ToyProject(RegisterToyProjectDto registerToyProjectDto){
+        this.title=registerToyProjectDto.getTitle();
+        this.shotDescription=registerToyProjectDto.getShotDescription();
+        this.fullDescription=registerToyProjectDto.getFullDescription();
+    }
+
+    public void update(UpdateTargetToyProjectDto updateTargetToyProjectDto){
+
+        this.title= updateTargetToyProjectDto.getTitle();
+        this.shotDescription=updateTargetToyProjectDto.getShotDescription();
+        this.fullDescription=updateTargetToyProjectDto.getFullDescription();
+        this.projectStart=updateTargetToyProjectDto.getProjectStart();
+        this.projectEnd=updateTargetToyProjectDto.getProjectEnd();
+    }
+
+
 }
