@@ -2,7 +2,6 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.MemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.Memoir;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
@@ -10,6 +9,9 @@ import com.dangsan.dotjoin.modules.toyproject.repository.subproject.MemoirReposi
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.SubProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,17 +38,18 @@ public class MemoirService {
     }
 
 
-    public InquireAllMemoirDto inquireAllMemoir(Long subProjectId){
+    public List<InquireAllMemoirDto> inquireAllMemoir(Long subProjectId){
 
         SubProject subProject=subProjectRepository.findById(subProjectId).get();
 
-        InquireAllMemoirDto inquireAllMemoirDto=new InquireAllMemoirDto();
-        inquireAllMemoirDto.setSubProjectId(subProjectId);
+        List<InquireAllMemoirDto> inquireAllMemoirDtoList=new ArrayList<>();
+
         for(Memoir memoir: subProject.getProjectMemoirs()){
-            MemoirDto memoirDto=new MemoirDto(memoir);
-            inquireAllMemoirDto.getMemoirDtoList().add(memoirDto);
+
+            InquireAllMemoirDto inquireAllMemoirDto=new InquireAllMemoirDto(memoir);
+            inquireAllMemoirDtoList.add(inquireAllMemoirDto);
         }
-        return inquireAllMemoirDto;
+        return inquireAllMemoirDtoList;
 
     }
     public void updateTargetMemoir(Long memoirId, UpdateTargetMemoirDto updateTargetMemoirDto){

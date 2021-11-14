@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,7 +40,15 @@ public class ToyProjectService {
 
     public List<InquireAllToyProjectDto> inquireAllToyProject(){
 
-        return null;
+        List<ToyProject> toyProjects= toyProjectRepository.findAll();
+        List<InquireAllToyProjectDto> inquireAllToyProjectDtoList= new ArrayList<>();
+
+        for(ToyProject toyProject: toyProjects){
+            InquireAllToyProjectDto inquireAllToyProjectDto=new InquireAllToyProjectDto(toyProject);
+            inquireAllToyProjectDtoList.add(inquireAllToyProjectDto);
+
+        }
+        return inquireAllToyProjectDtoList;
     }
 
     public void registerToyProject(RegisterToyProjectDto registerToyProjectDto){

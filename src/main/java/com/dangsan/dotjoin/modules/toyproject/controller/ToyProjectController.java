@@ -34,9 +34,9 @@ public class ToyProjectController {
 
     @GetMapping
     public ResponseEntity<?> inquireAllToyProject() {
-        List<InquireAllToyProjectDto> inquireAllToyProjectDto= toyProjectService.inquireAllToyProject();
+        List<InquireAllToyProjectDto> inquireAllToyProjectDtoList= toyProjectService.inquireAllToyProject();
 
-        return ResponseEntity.ok(inquireAllToyProjectDto);
+        return ResponseEntity.ok(inquireAllToyProjectDtoList);
     }
 
     @PostMapping

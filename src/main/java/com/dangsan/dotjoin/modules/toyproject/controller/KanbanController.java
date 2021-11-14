@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
@@ -25,6 +27,14 @@ public class KanbanController {
         KanbanCard kanbanCard= kanbanService.inquireTargetKanbanCard(kanbanCardId);
 
         return ResponseEntity.ok(kanbanCard);
+    }
+
+    @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards")
+    public ResponseEntity<?> inquireAllKanbanCard (@PathVariable  Long kanbanListId) {
+
+        List<InquireAllCardDto> inquireAllCardDtoList= kanbanService.inquireAllKanbanCard(kanbanListId);
+
+        return ResponseEntity.ok(inquireAllCardDtoList);
     }
 
 
@@ -62,6 +72,16 @@ public class KanbanController {
 
         return ResponseEntity.ok(kanbanList);
     }
+
+
+    @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists")
+    public ResponseEntity<?> inquireAllKanbanList (@PathVariable Long kanbanBoardId) {
+
+        List<InquireAllListDto> inquireAllListDtoList= kanbanService.inquireAllKanbanList(kanbanBoardId);
+
+        return ResponseEntity.ok(inquireAllListDtoList);
+    }
+
 
     @PostMapping("/kanbanboards/{kanbanBoardId}/kanbanlists")
     public ResponseEntity<?> registerKanbanList (@PathVariable Long kanbanBoardId, @RequestBody RegisterListDto registerListDto) {

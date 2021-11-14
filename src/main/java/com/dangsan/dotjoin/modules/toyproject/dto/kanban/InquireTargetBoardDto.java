@@ -20,13 +20,13 @@ public class InquireTargetBoardDto {
 
     private String boardName;
 
-    private List<KanbanList> lists;
+    private List<KanbanList> kanbanLists;
 
 
     public InquireTargetBoardDto(KanbanBoard kanbanBoard){
         this.boardId=kanbanBoard.getId();
         this.boardName=kanbanBoard.getBoardName();
-        this.lists=kanbanBoard.getKanbanLists();
+        this.kanbanLists=kanbanBoard.getKanbanLists();
     }
 
 

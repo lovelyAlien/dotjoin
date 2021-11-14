@@ -2,9 +2,9 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
+import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireAllQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireTargetQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
-import com.dangsan.dotjoin.modules.toyproject.model.subproject.Answer;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.Question;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.QuestionRepository;
@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,21 @@ public class QuestionService {
 
         return inquireTargetQuestionDto;
 
+
+    }
+
+    public List<InquireAllQuestionDto> inquireAllQuestion(Long subProjectId){
+
+        SubProject subProject=subProjectRepository.findById(subProjectId).get();
+
+        List<InquireAllQuestionDto> inquireAllQuestionDtoList=new ArrayList<>();
+
+        for(Question question: subProject.getProjectQuestions()){
+            InquireAllQuestionDto inquireAllQuestionDto=new InquireAllQuestionDto(question);
+
+            inquireAllQuestionDtoList.add(inquireAllQuestionDto);
+        }
+        return inquireAllQuestionDtoList;
 
     }
 

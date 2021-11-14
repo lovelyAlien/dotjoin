@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,20 @@ public class KanbanService {
     public KanbanCard inquireTargetKanbanCard(Long kanbanCardId){
         return kanbanCardRepository.findById(kanbanCardId).get();
     }
+
+    public List<InquireAllCardDto> inquireAllKanbanCard(Long kanbanListId){
+
+        KanbanList kanbanList=kanbanListRepository.findById(kanbanListId).get();
+
+        List<InquireAllCardDto> inquireAllCardDtoList=new ArrayList<>();
+
+        for(KanbanCard kanbanCard: kanbanList.getKanbanCards()){
+            InquireAllCardDto inquireAllCardDto=new InquireAllCardDto(kanbanCard);
+            inquireAllCardDtoList.add(inquireAllCardDto);
+        }
+        return inquireAllCardDtoList;
+    }
+
 
     public Long registerKanbanCard(RegisterCardDto registerCardDto){
 
@@ -68,6 +84,24 @@ public class KanbanService {
     public KanbanList inquireTargetKanbanList(Long kanbanListId){
         return kanbanListRepository.findById(kanbanListId).get();
     }
+
+    public List<InquireAllListDto> inquireAllKanbanList(Long kanbanBoardId){
+       KanbanBoard kanbanBoard=kanbanBoardRepository.findById(kanbanBoardId).get();
+
+       List<InquireAllListDto> inquireAllListDtoList=new ArrayList<>();
+
+       for(KanbanList kanbanList: kanbanBoard.getKanbanLists()){
+           InquireAllListDto inquireAllListDto= new InquireAllListDto(kanbanList);
+
+           inquireAllListDtoList.add(inquireAllListDto);
+
+       }
+
+       return inquireAllListDtoList;
+
+    }
+
+
 
     public Long registerKanbanList(Long kanbanBoardId, RegisterListDto registerListDto){
 

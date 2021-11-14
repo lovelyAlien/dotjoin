@@ -2,8 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.controller;
 
 
 
-import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProject;
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.UpdateTargetSubProjectDto;
@@ -13,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,10 +30,10 @@ public class SubProjectController {
     }
 
     @GetMapping("/subprojects")
-    public ResponseEntity<?> inquireAllSubProject (@PathVariable String projectId) {
-        InquireAllSubProject allSubProject = new InquireAllSubProject();
+    public ResponseEntity<?> inquireAllSubProject (@PathVariable Long projectId) {
+        List<InquireAllSubProjectDto> inquireAllSubProjectDtoList = subProjectService.inquireAllSubProject(projectId);
 
-        return ResponseEntity.ok(allSubProject);
+        return ResponseEntity.ok(inquireAllSubProjectDtoList);
     }
 
 

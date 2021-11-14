@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
@@ -30,9 +32,9 @@ public class MemoirController {
     public ResponseEntity<?> inquireAllMemoir (@PathVariable Long subprojectId) {
 
 
-        InquireAllMemoirDto allMemoir = memoirService.inquireAllMemoir(subprojectId);
+        List<InquireAllMemoirDto> inquireAllMemoirDtoList = memoirService.inquireAllMemoir(subprojectId);
 
-        return ResponseEntity.ok(allMemoir);
+        return ResponseEntity.ok(inquireAllMemoirDtoList);
     }
 
     @GetMapping("/memoirs/{memoirId}")

@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
+import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireAllAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
 import com.dangsan.dotjoin.modules.toyproject.service.AnswerService;
@@ -10,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -25,6 +28,12 @@ public class AnswerController {
         InquireTargetAnswerDto inquireTargetAnswerDto= answerService.inquireTargetAnswer(questionId, answerId);
 
         return ResponseEntity.ok(inquireTargetAnswerDto);
+    }
+
+    @GetMapping("/answers")
+    public ResponseEntity<?> inquireAllAnswer (@PathVariable Long questionId) {
+        List<InquireAllAnswerDto> inquireAllAnswerDtoList= answerService.inquireAllAnswer(questionId);
+        return ResponseEntity.ok(inquireAllAnswerDtoList);
     }
 
     @PostMapping("/answers")

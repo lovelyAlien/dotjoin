@@ -1,10 +1,8 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireAllQuestion;
+import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireAllQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.InquireTargetQuestionDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
-import com.dangsan.dotjoin.modules.toyproject.service.AnswerService;
 import com.dangsan.dotjoin.modules.toyproject.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,11 +30,10 @@ public class QuestionController {
     }
 
     @GetMapping("/questions")
-    public ResponseEntity<?> inquireAllQuestion (@PathVariable String projectId,
-                                                 @PathVariable String subprojectId) {
-        InquireAllQuestion allQuestion = new InquireAllQuestion();
+    public ResponseEntity<?> inquireAllQuestion (@PathVariable Long subProjectId) {
+        List<InquireAllQuestionDto> inquireAllQuestionDtoList = questionService.inquireAllQuestion(subProjectId);
 
-        return ResponseEntity.ok(allQuestion);
+        return ResponseEntity.ok(inquireAllQuestionDtoList);
     }
 
     @PostMapping("/questions")

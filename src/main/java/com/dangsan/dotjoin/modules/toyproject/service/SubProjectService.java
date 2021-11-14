@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
+import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireAllSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.InquireTargetSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.subproject.UpdateTargetSubProjectDto;
@@ -9,6 +10,9 @@ import com.dangsan.dotjoin.modules.toyproject.repository.ToyProjectRepository;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.SubProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -25,6 +29,19 @@ public class SubProjectService {
 
         return inquireTargetSubProjectDto;
 
+    }
+
+    public List<InquireAllSubProjectDto> inquireAllSubProject(Long toyProjectId){
+        ToyProject toyProject= toyProjectRepository.findById(toyProjectId).get();
+
+        List<InquireAllSubProjectDto> inquireAllSubProjectDtoList=new ArrayList<>();
+
+        for(SubProject subProject: toyProject.getSubProjects()){
+            InquireAllSubProjectDto inquireAllSubProjectDto=new InquireAllSubProjectDto(subProject);
+            inquireAllSubProjectDtoList.add(inquireAllSubProjectDto);
+        }
+
+        return inquireAllSubProjectDtoList;
     }
 
     public void registerSubProject(Long projectId, RegisterSubProjectDto registerSubProjectDto){

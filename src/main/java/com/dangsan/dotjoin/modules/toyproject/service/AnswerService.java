@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
+import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireAllAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.Answer;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.Question;
@@ -13,6 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,16 @@ public class AnswerService {
 
     }
 
+    public List<InquireAllAnswerDto> inquireAllAnswer(Long questionId){
+        Question question= questionRepository.findById(questionId).get();
+        List<InquireAllAnswerDto> inquireAllAnswerDtoList=new ArrayList<>();
+        for(Answer answer: question.getAnswers()){
+            InquireAllAnswerDto inquireAllAnswerDto=new InquireAllAnswerDto(answer);
+            inquireAllAnswerDtoList.add(inquireAllAnswerDto);
+        }
 
+        return inquireAllAnswerDtoList;
+    }
     public Long registerAnswer(Long questionId, User user){
         Question question= questionRepository.findById(questionId).get();
         Account answerer= accountRepository.findByEmail(user.getUsername());
