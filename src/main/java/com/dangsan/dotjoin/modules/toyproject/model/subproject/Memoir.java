@@ -1,16 +1,19 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class Memoir {
 
     @Id
@@ -55,4 +58,37 @@ public class Memoir {
 
     @Column
     private boolean deleteData = false;
+
+    public Memoir(SubProject subProject, String title) {
+        this.subProject = subProject;
+        this.title = title;
+    }
+
+    public void update(UpdateTargetMemoirDto updateTargetMemoirDto) {
+
+
+        this.title = updateTargetMemoirDto.getTitle();
+
+        this.whatDid = updateTargetMemoirDto.getWhatDid();
+
+        this.whatLearn = updateTargetMemoirDto.getWhatLearn();
+
+        this.whatProblem = updateTargetMemoirDto.getWhatProblem();
+
+        this.howSolution = updateTargetMemoirDto.getHowSolution();
+
+        this.whyReason = updateTargetMemoirDto.getWhyReason();
+
+        this.url = updateTargetMemoirDto.getUrl();
+
+        this.developDate = updateTargetMemoirDto.getDevelopDate();
+
+        this.insertDate = updateTargetMemoirDto.getInsertDate();
+
+        this.updateDate = updateTargetMemoirDto.getUpdateDate();
+
+        this.deleteDate = updateTargetMemoirDto.getDeleteDate();
+
+        this.deleteData = updateTargetMemoirDto.isDeleteData();
+    }
 }

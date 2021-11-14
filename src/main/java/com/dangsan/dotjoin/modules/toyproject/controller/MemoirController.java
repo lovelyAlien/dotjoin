@@ -4,41 +4,55 @@ import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.RegisterMemoirDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.service.MemoirService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
 public class MemoirController {
+    private final MemoirService memoirService;
 
-    @PostMapping("/{projectId}/subprojects/{subprojectId}/memoirs/")
-    public ResponseEntity<?> registerMemoir (@PathVariable String projectId,
-                                             @PathVariable String subprojectId,
-                                             @RequestBody RegisterMemoirDto memoir) {
-        return ResponseEntity.ok(HttpStatus.OK);
+    @PostMapping("/memoirs")
+    public ResponseEntity<?> registerMemoir (@PathVariable Long subProjectId, @RequestBody String title) {
+
+        Long memoirId= memoirService.registerMemoir(subProjectId, title);
+
+        return ResponseEntity.ok(memoirId);
     }
 
-    @GetMapping("/{projectId}/subprojects/{subprojectId}/memoirs/")
-    public ResponseEntity<?> inquireAllMemoir (@PathVariable String projectId,
-                                               @PathVariable String subprojectId) {
-        InquireAllMemoirDto allMemoir = new InquireAllMemoirDto();
+    @GetMapping("/memoirs")
+    public ResponseEntity<?> inquireAllMemoir (@PathVariable Long subprojectId) {
+
+
+        InquireAllMemoirDto allMemoir = memoirService.inquireAllMemoir(subprojectId);
 
         return ResponseEntity.ok(allMemoir);
     }
 
-    @GetMapping("/{projectId}/subprojects/{subprojectId}/memoirs/{memoirId}")
-    public ResponseEntity<?> inquireTargetMemoir(@PathVariable String projectId,
-                                                 @PathVariable String subprojectId,
-                                                 @PathVariable String memoirId) {
-        InquireTargetMemoirDto targetMemoir = new InquireTargetMemoirDto();
+    @GetMapping("/memoirs/{memoirId}")
+    public ResponseEntity<?> inquireTargetMemoir(@PathVariable Long memoirId) {
 
-        return ResponseEntity.ok(targetMemoir);
+        InquireTargetMemoirDto inquireTargetMemoirDto= memoirService.inquireTargetMemoir(memoirId);
+        return ResponseEntity.ok(inquireTargetMemoirDto);
     }
 
-    @PutMapping("/{projectId}/subprojects/{subprojectId}/memoirs/{memoirId}")
-    public ResponseEntity<?> updateTargetMemoir(@PathVariable String projectId,
-                                                @PathVariable String subprojectId,
-                                                @PathVariable String memoirId,
-                                                @RequestBody UpdateTargetMemoirDto targetMemoir) {
+    @PutMapping("/memoirs/{memoirId}")
+    public ResponseEntity<?> updateTargetMemoir(@PathVariable Long memoirId,
+                                                @RequestBody UpdateTargetMemoirDto updateTargetMemoirDto) {
+
+        memoirService.updateTargetMemoir(memoirId, updateTargetMemoirDto);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/memoirs/{memoirId}")
+    public ResponseEntity<?> deleteTargetMemoir(@PathVariable Long memoirId) {
+        memoirService.deleteTargetMemoir(memoirId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -24,6 +25,7 @@ public class Url {
     private String url;
 
     @ManyToOne
+    @JsonIgnore
     private Memoir memoir;
 
 }
