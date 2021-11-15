@@ -1,12 +1,12 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.*;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.Memoir;
 import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
+import com.dangsan.dotjoin.modules.toyproject.model.subproject.Url;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.MemoirRepository;
 import com.dangsan.dotjoin.modules.toyproject.repository.subproject.SubProjectRepository;
+import com.dangsan.dotjoin.modules.toyproject.repository.subproject.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,10 @@ import java.util.List;
 public class MemoirService {
     private final SubProjectRepository subProjectRepository;
     private final MemoirRepository memoirRepository;
+    private final UrlRepository urlRepository;
+
+
+
     public Long registerMemoir(Long subProjectId, String title){
         SubProject subProject= subProjectRepository.findById(subProjectId).get();
 
@@ -77,5 +81,26 @@ public class MemoirService {
             inquireAllMemoirDtoList.add(inquireAllMemoirDto);
         }
         return inquireAllMemoirDtoList;
+    }
+
+
+    public Long registerUrl(Long memoirId, RegisterUrlDto registerUrlDto){
+
+        Memoir memoir=memoirRepository.findById(memoirId).get();
+        Url url=urlRepository.save(new Url(memoir, registerUrlDto));
+
+        return url.getId();
+    }
+
+
+    public void updateAllUrl(Long memoirId, List<UpdateTargetUrlDto> updateTargetUrlDtoList){
+
+
+
+        for(UpdateTargetUrlDto updateTargetUrlDto: updateTargetUrlDtoList){
+            Url url=urlRepository.findById(updateTargetUrlDto.getUrlId()).get();
+            url.update(updateTargetUrlDto);
+            urlRepository.save(url);
+        }
     }
 }

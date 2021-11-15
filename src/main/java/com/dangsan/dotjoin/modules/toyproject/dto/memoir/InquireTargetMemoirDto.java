@@ -34,7 +34,7 @@ public class InquireTargetMemoirDto {
 
     private String whyReason;
 
-    private List<Url> url;
+    private List<UrlDto> urlDtoList=new ArrayList<>();
 
     private LocalDate developDate;
 
@@ -64,7 +64,10 @@ public class InquireTargetMemoirDto {
 
         this.whyReason=memoir.getWhyReason();
 
-        this.url=memoir.getUrl();
+        for(Url url: memoir.getUrl()){
+            UrlDto urlDto=new UrlDto(url);
+            this.urlDtoList.add(urlDto);
+        }
 
         this.developDate=memoir.getDevelopDate();
 

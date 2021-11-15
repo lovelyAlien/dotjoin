@@ -1,9 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireAllMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.InquireTargetMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.RegisterMemoirDto;
-import com.dangsan.dotjoin.modules.toyproject.dto.memoir.UpdateTargetMemoirDto;
+import com.dangsan.dotjoin.modules.toyproject.dto.memoir.*;
 import com.dangsan.dotjoin.modules.toyproject.service.MemoirService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +26,10 @@ public class MemoirController {
     }
 
     @GetMapping("/memoirs")
-    public ResponseEntity<?> inquireAllMemoirInSubProject (@PathVariable Long subprojectId) {
+    public ResponseEntity<?> inquireAllMemoirInSubProject (@PathVariable Long subProjectId) {
 
 
-        List<InquireAllMemoirDto> inquireAllMemoirDtoList = memoirService.inquireAllMemoirInSubProject(subprojectId);
+        List<InquireAllMemoirDto> inquireAllMemoirDtoList = memoirService.inquireAllMemoirInSubProject(subProjectId);
 
         return ResponseEntity.ok(inquireAllMemoirDtoList);
     }
@@ -57,4 +54,23 @@ public class MemoirController {
         memoirService.deleteTargetMemoir(memoirId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
+    //Url 생성
+    @PostMapping("/memoirs/{memoirId}/urls")
+    public ResponseEntity<?> registerUrl(@PathVariable Long memoirId, @RequestBody RegisterUrlDto registerUrlDto){
+        Long urlId= memoirService.registerUrl(memoirId, registerUrlDto);
+
+        return ResponseEntity.ok(urlId);
+    }
+
+
+    @PutMapping("/memoirs/{memoirId}/urls")
+    public ResponseEntity<?> updateAllUrl(@PathVariable Long memoirId, @RequestBody List<UpdateTargetUrlDto> updateTargetUrlDtoList){
+
+        memoirService.updateAllUrl(memoirId, updateTargetUrlDtoList);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
 }
