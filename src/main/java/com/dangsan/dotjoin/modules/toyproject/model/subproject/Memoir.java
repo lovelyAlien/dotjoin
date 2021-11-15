@@ -79,8 +79,6 @@ public class Memoir {
 
         this.whyReason = updateTargetMemoirDto.getWhyReason();
 
-        this.url = updateTargetMemoirDto.getUrl();
-
         this.developDate = updateTargetMemoirDto.getDevelopDate();
 
         this.insertDate = updateTargetMemoirDto.getInsertDate();
@@ -91,4 +89,6 @@ public class Memoir {
 
         this.deleteData = updateTargetMemoirDto.isDeleteData();
     }
+
+
 }

@@ -22,8 +22,6 @@ public class UpdateTargetMemoirDto {
 
     private String whyReason;
 
-    private List<Url> url;
-
     private LocalDate developDate;
 
     private LocalDateTime insertDate;
