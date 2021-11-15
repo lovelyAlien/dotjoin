@@ -37,12 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        ,"/error"
 //                )
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-
+        System.out.println("현 위치: SecurityConfig.configure");
 
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
@@ -65,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/user/sign-up", "/api/user/login", "/api/toyprojects/**", "/api/main/**").permitAll()
                 .antMatchers("/api/user/**").authenticated()
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
                 //.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')")
@@ -85,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
 
-
     }
+
+
 }
