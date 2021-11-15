@@ -23,6 +23,9 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final SubProjectRepository subProjectRepository;
     private final AccountRepository accountRepository;
+
+
+
     public InquireTargetQuestionDto inquireTargetQuestion(Long subProjectId, Long questionId){
 
         Question question=questionRepository.findById(questionId).get();
@@ -34,7 +37,7 @@ public class QuestionService {
 
     }
 
-    public List<InquireAllQuestionDto> inquireAllQuestion(Long subProjectId){
+    public List<InquireAllQuestionDto> inquireAllQuestionInSubProject(Long subProjectId){
 
         SubProject subProject=subProjectRepository.findById(subProjectId).get();
 
@@ -73,6 +76,18 @@ public class QuestionService {
     public void deleteTargetQuestion(Long questionId){
 
         questionRepository.deleteById(questionId);
+    }
+
+    public List<InquireAllQuestionDto> inquireAllQuestion() {
+        List<Question> questions = questionRepository.findAll();
+
+        List<InquireAllQuestionDto> inquireAllQuestionDtoList=new ArrayList<>();
+
+        for(Question question: questions){
+            InquireAllQuestionDto inquireAllQuestionDto=new InquireAllQuestionDto(question);
+            inquireAllQuestionDtoList.add(inquireAllQuestionDto);
+        }
+        return inquireAllQuestionDtoList;
     }
 
 

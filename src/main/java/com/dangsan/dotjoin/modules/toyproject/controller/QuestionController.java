@@ -30,8 +30,8 @@ public class QuestionController {
     }
 
     @GetMapping("/questions")
-    public ResponseEntity<?> inquireAllQuestion (@PathVariable Long subProjectId) {
-        List<InquireAllQuestionDto> inquireAllQuestionDtoList = questionService.inquireAllQuestion(subProjectId);
+    public ResponseEntity<?> inquireAllQuestionInSubProject (@PathVariable Long subProjectId) {
+        List<InquireAllQuestionDto> inquireAllQuestionDtoList = questionService.inquireAllQuestionInSubProject(subProjectId);
 
         return ResponseEntity.ok(inquireAllQuestionDtoList);
     }
@@ -56,5 +56,8 @@ public class QuestionController {
         questionService.deleteTargetQuestion(questionId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
+
 
 }

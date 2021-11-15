@@ -32,7 +32,7 @@ public class KanbanService {
         return kanbanCardRepository.findById(kanbanCardId).get();
     }
 
-    public List<InquireAllCardDto> inquireAllKanbanCard(Long kanbanListId){
+    public List<InquireAllCardDto> inquireAllKanbanCardInKanbanList(Long kanbanListId){
 
         KanbanList kanbanList=kanbanListRepository.findById(kanbanListId).get();
 
@@ -85,7 +85,7 @@ public class KanbanService {
         return kanbanListRepository.findById(kanbanListId).get();
     }
 
-    public List<InquireAllListDto> inquireAllKanbanList(Long kanbanBoardId){
+    public List<InquireAllListDto> inquireAllKanbanListInKanbanBoard(Long kanbanBoardId){
        KanbanBoard kanbanBoard=kanbanBoardRepository.findById(kanbanBoardId).get();
 
        List<InquireAllListDto> inquireAllListDtoList=new ArrayList<>();

@@ -32,7 +32,7 @@ public class AnswerController {
 
     @GetMapping("/answers")
     public ResponseEntity<?> inquireAllAnswer (@PathVariable Long questionId) {
-        List<InquireAllAnswerDto> inquireAllAnswerDtoList= answerService.inquireAllAnswer(questionId);
+        List<InquireAllAnswerDto> inquireAllAnswerDtoList= answerService.inquireAllAnswerInQuestion(questionId);
         return ResponseEntity.ok(inquireAllAnswerDtoList);
     }
 

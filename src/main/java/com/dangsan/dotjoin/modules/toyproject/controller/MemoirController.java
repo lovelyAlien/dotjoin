@@ -29,10 +29,10 @@ public class MemoirController {
     }
 
     @GetMapping("/memoirs")
-    public ResponseEntity<?> inquireAllMemoir (@PathVariable Long subprojectId) {
+    public ResponseEntity<?> inquireAllMemoirInSubProject (@PathVariable Long subprojectId) {
 
 
-        List<InquireAllMemoirDto> inquireAllMemoirDtoList = memoirService.inquireAllMemoir(subprojectId);
+        List<InquireAllMemoirDto> inquireAllMemoirDtoList = memoirService.inquireAllMemoirInSubProject(subprojectId);
 
         return ResponseEntity.ok(inquireAllMemoirDtoList);
     }

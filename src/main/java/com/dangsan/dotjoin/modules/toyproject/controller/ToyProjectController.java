@@ -5,7 +5,6 @@ import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyPro
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.service.ToyProjectService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +19,12 @@ import java.util.List;
 public class ToyProjectController {
     private final ToyProjectService toyProjectService;
 
-
     @GetMapping("/{projectId}")
     public ResponseEntity<?> inquireTargetToyProject(@PathVariable Long projectId) {
 
         System.out.println("현 위치: ToyProjectController");
 
         InquireTargetToyProjectDto inquireTargetToyProjectDto= toyProjectService.inquireTargetToyProject(projectId);
-
 
         return ResponseEntity.ok(inquireTargetToyProjectDto);
     }

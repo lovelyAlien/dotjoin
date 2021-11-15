@@ -36,7 +36,7 @@ public class AnswerService {
 
     }
 
-    public List<InquireAllAnswerDto> inquireAllAnswer(Long questionId){
+    public List<InquireAllAnswerDto> inquireAllAnswerInQuestion(Long questionId){
         Question question= questionRepository.findById(questionId).get();
         List<InquireAllAnswerDto> inquireAllAnswerDtoList=new ArrayList<>();
         for(Answer answer: question.getAnswers()){

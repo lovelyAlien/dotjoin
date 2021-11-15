@@ -30,8 +30,8 @@ public class SubProjectController {
     }
 
     @GetMapping("/subprojects")
-    public ResponseEntity<?> inquireAllSubProject (@PathVariable Long projectId) {
-        List<InquireAllSubProjectDto> inquireAllSubProjectDtoList = subProjectService.inquireAllSubProject(projectId);
+    public ResponseEntity<?> inquireAllSubProjectInToyProject (@PathVariable Long projectId) {
+        List<InquireAllSubProjectDto> inquireAllSubProjectDtoList = subProjectService.inquireAllSubProjectInToyProject(projectId);
 
         return ResponseEntity.ok(inquireAllSubProjectDtoList);
     }

@@ -38,7 +38,7 @@ public class MemoirService {
     }
 
 
-    public List<InquireAllMemoirDto> inquireAllMemoir(Long subProjectId){
+    public List<InquireAllMemoirDto> inquireAllMemoirInSubProject(Long subProjectId){
 
         SubProject subProject=subProjectRepository.findById(subProjectId).get();
 
@@ -64,5 +64,18 @@ public class MemoirService {
     public void deleteTargetMemoir(Long memoirId){
         memoirRepository.deleteById(memoirId);
 
+    }
+
+    public List<InquireAllMemoirDto> inquireAllMemoir() {
+        List<Memoir> memoirs = memoirRepository.findAll();
+
+        List<InquireAllMemoirDto> inquireAllMemoirDtoList=new ArrayList<>();
+
+        for(Memoir memoir: memoirs){
+
+            InquireAllMemoirDto inquireAllMemoirDto=new InquireAllMemoirDto(memoir);
+            inquireAllMemoirDtoList.add(inquireAllMemoirDto);
+        }
+        return inquireAllMemoirDtoList;
     }
 }

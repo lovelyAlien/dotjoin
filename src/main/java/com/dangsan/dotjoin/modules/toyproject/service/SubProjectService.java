@@ -31,7 +31,7 @@ public class SubProjectService {
 
     }
 
-    public List<InquireAllSubProjectDto> inquireAllSubProject(Long toyProjectId){
+    public List<InquireAllSubProjectDto> inquireAllSubProjectInToyProject(Long toyProjectId){
         ToyProject toyProject= toyProjectRepository.findById(toyProjectId).get();
 
         List<InquireAllSubProjectDto> inquireAllSubProjectDtoList=new ArrayList<>();

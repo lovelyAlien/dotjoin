@@ -30,9 +30,9 @@ public class KanbanController {
     }
 
     @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists/{kanbanListId}/kanbancards")
-    public ResponseEntity<?> inquireAllKanbanCard (@PathVariable  Long kanbanListId) {
+    public ResponseEntity<?> inquireAllKanbanCardInKanbanList (@PathVariable  Long kanbanListId) {
 
-        List<InquireAllCardDto> inquireAllCardDtoList= kanbanService.inquireAllKanbanCard(kanbanListId);
+        List<InquireAllCardDto> inquireAllCardDtoList= kanbanService.inquireAllKanbanCardInKanbanList(kanbanListId);
 
         return ResponseEntity.ok(inquireAllCardDtoList);
     }
@@ -75,9 +75,9 @@ public class KanbanController {
 
 
     @GetMapping("/kanbanboards/{kanbanBoardId}/kanbanlists")
-    public ResponseEntity<?> inquireAllKanbanList (@PathVariable Long kanbanBoardId) {
+    public ResponseEntity<?> inquireAllKanbanListInKanbanBoard (@PathVariable Long kanbanBoardId) {
 
-        List<InquireAllListDto> inquireAllListDtoList= kanbanService.inquireAllKanbanList(kanbanBoardId);
+        List<InquireAllListDto> inquireAllListDtoList= kanbanService.inquireAllKanbanListInKanbanBoard(kanbanBoardId);
 
         return ResponseEntity.ok(inquireAllListDtoList);
     }

@@ -1,28 +1,26 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
-import com.dangsan.dotjoin.modules.toyproject.dto.subproject.RegisterSubProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
-import com.dangsan.dotjoin.modules.toyproject.model.subproject.SubProject;
 import com.dangsan.dotjoin.modules.toyproject.repository.ToyProjectRepository;
-import com.dangsan.dotjoin.modules.toyproject.repository.subproject.SubProjectRepository;
-import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanBoardRepository;
-import com.dangsan.dotjoin.modules.toyproject.repository.subproject.kanbanboard.KanbanListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
+
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ToyProjectService {
+
     private final ToyProjectRepository toyProjectRepository;
-    private final SubProjectRepository subProjectRepository;
+
 
     public InquireTargetToyProjectDto inquireTargetToyProject(Long projectId){
         System.out.println("projectId: "+ projectId);
@@ -65,7 +63,28 @@ public class ToyProjectService {
     }
     @Transactional
     public void deleteTargetToyProject(Long projectId){
+
         toyProjectRepository.deleteById(projectId);
+    }
+
+
+
+    public List<InquireAllToyProjectDto> inquireWorkingToyProjects() {
+
+        System.out.println("Today date: "+ LocalDate.now());
+        ToyProject t= toyProjectRepository.findById(1L).get();
+        System.out.println("Project's start and end: "+ t.getProjectStart()+", "+t.getProjectEnd());
+
+        List <ToyProject> toyProjects= toyProjectRepository.findAllByProjectStartLessThanEqualAndProjectEndGreaterThanEqual(LocalDate.now(), LocalDate.now());
+        List<InquireAllToyProjectDto> inquireAllToyProjectDtoList = new ArrayList<>();
+
+        for(ToyProject toyProject: toyProjects){
+            InquireAllToyProjectDto inquireAllToyProjectDto=new InquireAllToyProjectDto(toyProject);
+            inquireAllToyProjectDtoList.add(inquireAllToyProjectDto);
+
+        }
+
+        return inquireAllToyProjectDtoList;
     }
 
 }
