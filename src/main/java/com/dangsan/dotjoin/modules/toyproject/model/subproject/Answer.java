@@ -1,6 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class Answer {
     @OneToMany(mappedBy = "answer", orphanRemoval = true)
     private List<AnswerLike> answerLikes = new ArrayList<AnswerLike>();
 
+    @Builder
     public Answer(Question question, Account answerer){
         this.question=question;
         this.answerer=answerer;

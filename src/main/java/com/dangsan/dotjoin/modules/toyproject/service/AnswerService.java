@@ -46,6 +46,8 @@ public class AnswerService {
 
         return inquireAllAnswerDtoList;
     }
+
+
     public Long registerAnswer(Long questionId, User user){
         Question question= questionRepository.findById(questionId).get();
         Account answerer= accountRepository.findByEmail(user.getUsername());
