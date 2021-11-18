@@ -115,15 +115,15 @@ class AnswerControllerTest {
         question.setId(1L);
         Answer answer=new Answer(question, answerer);
         answerRepository.save(answer);
-        Long answerId=answer.getId();
+//        Long answerId=answer.getId();
 
 //        given(answerRepository.findById(any())).willReturn(Optional.of(answer));
 
-//        //when
+        //when
 //        answerService.updateTargetAnswer(answerId, "It is answer test");
 
 
-//        //then
+        //then
 //        assertEquals("It is answer test", answer.getDetail());
 //        then(answerRepository).should(times(2)).save(answer);
 //        then(answerRepository).shouldHaveNoInteractions();

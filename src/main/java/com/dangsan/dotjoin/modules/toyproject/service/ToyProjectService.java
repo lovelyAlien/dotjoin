@@ -1,5 +1,7 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
+import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireAllToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.InquireTargetToyProjectDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.RegisterToyProjectDto;
@@ -7,12 +9,14 @@ import com.dangsan.dotjoin.modules.toyproject.dto.toyproject.UpdateTargetToyProj
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import com.dangsan.dotjoin.modules.toyproject.repository.ToyProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,7 +24,7 @@ import java.util.List;
 public class ToyProjectService {
 
     private final ToyProjectRepository toyProjectRepository;
-
+    private final AccountRepository accountRepository;
 
     public InquireTargetToyProjectDto inquireTargetToyProject(Long projectId){
         System.out.println("projectId: "+ projectId);
@@ -87,4 +91,38 @@ public class ToyProjectService {
         return inquireAllToyProjectDtoList;
     }
 
+    public void requestJoinToyProject(User user, Long projectId) throws Exception {
+        ToyProject toyProject=toyProjectRepository.findById(projectId).get();
+
+        Account requester=accountRepository.findByEmail(user.getUsername());
+
+        if(toyProject.getRequesters().contains(requester))
+            throw new Exception("Already requested");
+        else if(toyProject.getMembers().contains(requester))
+            throw new Exception("Already a member");
+
+        toyProject.getRequesters().add(requester);
+
+    }
+
+    @Transactional
+    public void acceptJoinToyProject(User user, Long requesterId, Long toyProjectId) throws Exception {
+
+        Account manager= accountRepository.findByEmail(user.getUsername());
+        Account requester=accountRepository.findById(requesterId).get();
+        String[] authorities=manager.getRoles().split(",");
+        if(Arrays.asList(authorities).contains("ADMIN")){
+
+            ToyProject toyProject=toyProjectRepository.findById(toyProjectId).get();
+            toyProject.getRequesters().remove(requester);
+
+            toyProjectRepository.flush();
+
+            toyProject.getMembers().add(requester);
+        }
+        else
+            throw new Exception("엑세스할 수 있는 권한이 없습니다.");
+
+    }
 }
+
