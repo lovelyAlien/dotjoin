@@ -97,9 +97,9 @@ public class ToyProjectService {
         Account requester=accountRepository.findByEmail(user.getUsername());
 
         if(toyProject.getRequesters().contains(requester))
-            throw new Exception("Already requested");
+            throw new RuntimeException("Already requested");
         else if(toyProject.getMembers().contains(requester))
-            throw new Exception("Already a member");
+            throw new RuntimeException("Already a member");
 
         toyProject.getRequesters().add(requester);
 
@@ -121,7 +121,7 @@ public class ToyProjectService {
             toyProject.getMembers().add(requester);
         }
         else
-            throw new Exception("엑세스할 수 있는 권한이 없습니다.");
+            throw new RuntimeException("엑세스할 수 있는 권한이 없습니다.");
 
     }
 }
