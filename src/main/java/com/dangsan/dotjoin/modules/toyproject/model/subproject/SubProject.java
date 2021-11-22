@@ -22,7 +22,7 @@ public class SubProject extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ToyProject toyProject;
 
     @Column
@@ -46,8 +46,8 @@ public class SubProject extends Timestamped {
     @Column
     private LocalDate realEnd;
 
-    @OneToOne(mappedBy ="subProject", orphanRemoval = true)
-    private KanbanBoard kanbanBoard;
+//    @OneToOne(mappedBy ="subProject", fetch = FetchType.LAZY, orphanRemoval = true)
+//    private KanbanBoard kanbanBoard;
 
     @OneToMany(mappedBy = "subProject", orphanRemoval = true)
     private List<SubProjectRate> projectRates = new ArrayList<SubProjectRate>();
