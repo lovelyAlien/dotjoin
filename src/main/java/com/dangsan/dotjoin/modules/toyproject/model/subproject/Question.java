@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.model.subproject;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.toyproject.dto.question.UpdateTargetQuestionDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +41,7 @@ public class Question {
     @OneToMany(mappedBy = "question", orphanRemoval = true)
     private List<Answer> answers = new ArrayList<Answer>();
 
-
+    @Builder
     public Question(SubProject subProject, Account questioner){
         this.subProject=subProject;
         this.questioner=questioner;
