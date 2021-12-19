@@ -31,7 +31,7 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class AccountController {
     private final AccountService accountService;
     private final TokenProvider tokenProvider;
@@ -44,7 +44,7 @@ public class AccountController {
 
     @PostMapping("/test-redirect")
     public void testRedirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/api/user");
+        response.sendRedirect("/api/users");
     }
 
     @GetMapping("/test/oauth/login")
