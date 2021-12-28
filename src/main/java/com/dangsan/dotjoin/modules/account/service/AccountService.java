@@ -1,7 +1,5 @@
 package com.dangsan.dotjoin.modules.account.service;
 
-import com.dangsan.dotjoin.infra.config.AppProperties;
-import com.dangsan.dotjoin.infra.mail.EmailMessage;
 import com.dangsan.dotjoin.infra.utils.SecurityUtil;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
@@ -17,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -32,7 +29,6 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
 //    private final EmailService emailService;
 
@@ -70,24 +66,6 @@ public class AccountService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    public void sendSignUpConfirmEmail(Account newAccount) {
-        Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail());
-        context.setVariable("nickname", newAccount.getNickname());
-        context.setVariable("linkName", "이메일 인증하기");
-        context.setVariable("message", "스터디올래 서비스를 사용하려면 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(newAccount.getEmail())
-                .subject("스터디올래, 회원 가입 인증")
-                .message(message)
-                .build();
-
-//        emailService.sendEmail(emailMessage);
-    }
 
 
 //    public void login(Account account) {
@@ -109,5 +87,11 @@ public class AccountService implements UserDetailsService {
         Account account=accountRepository.findByEmail(email.get());
         return new UserAccount(account);
     }
+
+    public void clearAllAccount() {
+        accountRepository.deleteAll();
+    }
+
+
 
 }

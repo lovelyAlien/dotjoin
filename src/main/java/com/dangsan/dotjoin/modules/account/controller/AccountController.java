@@ -1,11 +1,8 @@
 package com.dangsan.dotjoin.modules.account.controller;
 
 
-import com.dangsan.dotjoin.infra.jwt.JwtFilter;
-import com.dangsan.dotjoin.infra.jwt.TokenProvider;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
-import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
 import com.dangsan.dotjoin.modules.account.dto.LoginDto;
 import com.dangsan.dotjoin.modules.account.dto.TokenDto;
@@ -22,19 +19,17 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class AccountController {
     private final AccountService accountService;
-    private final TokenProvider tokenProvider;
+//    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @GetMapping("/hello")
@@ -80,22 +75,22 @@ public class AccountController {
         return "/login";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-
-        System.out.println("loginDto 받음");
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
-
-        Authentication authentication =  authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+//
+//        System.out.println("loginDto 받음");
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+//
+//        Authentication authentication =  authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String jwt = tokenProvider.createToken(authentication);
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+//
+//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+//    }
 
 
 

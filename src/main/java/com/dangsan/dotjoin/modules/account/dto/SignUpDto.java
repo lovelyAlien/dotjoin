@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.account.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
+@Builder
 public class SignUpDto {
 
     @NotBlank
