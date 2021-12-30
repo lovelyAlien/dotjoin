@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class VerifyResult {
 
-    private String userId;
+    private Long userId;
     private boolean result;
 }

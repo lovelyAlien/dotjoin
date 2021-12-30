@@ -57,10 +57,10 @@ public class JWTUtil {
     public VerifyResult verify(String token){
         try{
             DecodedJWT decode = JWT.require(AL).build().verify(token);
-            return VerifyResult.builder().userId(decode.getSubject()).result(true).build();
+            return VerifyResult.builder().userId(Long.valueOf(decode.getSubject())).result(true).build();
         }catch(JWTVerificationException ex){
             DecodedJWT decode = JWT.decode(token);
-            return VerifyResult.builder().userId(decode.getSubject()).result(false).build();
+            return VerifyResult.builder().userId(Long.valueOf(decode.getSubject())).result(false).build();
         }
     }
 

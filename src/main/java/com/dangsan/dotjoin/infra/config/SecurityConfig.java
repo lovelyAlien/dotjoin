@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.infra.config;
 
+import com.dangsan.dotjoin.infra.jwt.JWTCheckFilter;
 import com.dangsan.dotjoin.infra.jwt.JWTLoginFilter;
 import com.dangsan.dotjoin.infra.jwt.JWTUtil;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
@@ -7,12 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         JWTLoginFilter jwtLoginFilter=new JWTLoginFilter(objectMapper, jwtUtil, authenticationManager());
-
+        JWTCheckFilter jwtCheckFilter=new JWTCheckFilter(authenticationManager(), accountService, jwtUtil);
         http.csrf().disable()
                 .formLogin(
                         config->{
@@ -42,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                     .failureForwardUrl("/login?error=true");
                         }
                 )
-                .addFilter(jwtLoginFilter);
+                .addFilter(jwtLoginFilter)
+                .addFilter(jwtCheckFilter);
 //        super.configure(http);
     }
 

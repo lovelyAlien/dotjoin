@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.account.model;
 
 import com.dangsan.dotjoin.modules.Timestamped;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Account extends Timestamped {
     @Id
@@ -64,6 +64,7 @@ public class Account extends Timestamped {
     @Column
     private String roles; //USER, ADMIN
 
+
     @Column
     private String emailCheckToken;
 
@@ -78,35 +79,20 @@ public class Account extends Timestamped {
         return new ArrayList<>();
     }
 
+    public void addRole(String role){
+        if(roles==null)
+            roles=role;
+        else
+            roles=roles+","+role;
+
+    }
+
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
-    @Builder
-    public Account(String username, String nickname, String password, String email, String profileImgUrl, String roles, String provider, String providerId){
-        this.username= username;
-        this.nickname=nickname;
-        this.password=password;
-        this.email=email;
-        this.profileImgUrl=profileImgUrl;
-        this.roles=roles;
-        this.provider=provider;
-        this.providerId=providerId;
-    }
 
-//    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL )
-//    private List<Post> post;
-//
-//    @OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-//    private List<Comment> comments;
-//
-//
-//    @OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-//    private Set<Follow> followings;
-//
-//    @OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-//    private Set<Follow> followers;
 
 }

@@ -1,6 +1,7 @@
 package com.dangsan.dotjoin.modules.account.controller;
 
 
+import com.dangsan.dotjoin.infra.utils.RestResponsePage;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -29,7 +31,7 @@ import java.io.IOException;
 @RequestMapping("/api/users")
 public class AccountController {
     private final AccountService accountService;
-//    private final TokenProvider tokenProvider;
+    //    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @GetMapping("/hello")
@@ -43,11 +45,12 @@ public class AccountController {
     }
 
     @GetMapping("/test/oauth/login")
-    public @ResponseBody String testOAuthLogin(
-                                               Authentication authentication){
+    public @ResponseBody
+    String testOAuthLogin(
+            Authentication authentication) {
         System.out.println(authentication);
         System.out.println("/test/oauth/login================");
-        OAuth2User oAuth2User=(OAuth2User) authentication.getPrincipal();
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 //        System.out.println("authentication "+ oAuth2User.getAttributes());
 //        System.out.println("oauth: "+ oauth.getAttributes());
 //        System.out.println("userDetails: "+ userDetails.getAttributes());
@@ -65,7 +68,7 @@ public class AccountController {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
 
-        Account account = accountService.processNewAccount(signUpForm);
+        Account account = accountService.processNewUser(signUpForm);
 //        accountService.login(account);
         return ResponseEntity.ok(account);
     }
@@ -93,9 +96,6 @@ public class AccountController {
 //    }
 
 
-
-
-
 //    @GetMapping("/logout")
 //    public void logout(HttpServletRequest request, HttpServletResponse response){
 //        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
@@ -106,6 +106,15 @@ public class AccountController {
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @GetMapping("/list")
+    public RestResponsePage<User> list(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ){
+        return RestResponsePage.of(accountService.listUsers(page, size));
     }
 
 //    @GetMapping("/user/{username}")

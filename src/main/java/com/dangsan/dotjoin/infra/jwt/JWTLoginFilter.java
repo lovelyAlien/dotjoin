@@ -4,8 +4,10 @@ package com.dangsan.dotjoin.infra.jwt;
 import com.dangsan.dotjoin.modules.account.dto.LoginDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.model.UserAccount;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
@@ -29,8 +32,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl("/login");
-
+        setFilterProcessesUrl("/api/auth/login");
     }
 
 
@@ -52,11 +54,10 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-
-        System.out.println("authResult.getPrincipal(): "+authResult.getPrincipal());
-        System.out.println("authResult.getCredentials(): "+ authResult.getCredentials());
-        System.out.println("authResult.toString(): "+ authResult.toString());
-        System.out.println("authResult.getDetails(): "+ authResult.getDetails());
+        log.info("authResult.toString(): {}", authResult.toString());
+        log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
+        log.info("authResult.getCredentials(): {}", authResult.getCredentials());
+        log.info("authResult.getDetails(): {}", authResult.getDetails());
 
 
 
