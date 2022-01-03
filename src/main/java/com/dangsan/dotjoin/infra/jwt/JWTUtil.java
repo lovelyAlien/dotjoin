@@ -4,19 +4,30 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JWTUtil {
 
-    public static final String AUTH_HEADER = "Authentication";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH_HEADER = "refresh-token";
     public static final String BEARER = "Bearer ";
+    private static final String AUTHORITIES_KEY = "auth";
+
 
     private Algorithm AL;
+
+
 
     public static enum TokenType {
         access,
@@ -39,8 +50,19 @@ public class JWTUtil {
     }
 
     public String generate(Authentication authentication, TokenType type){
+
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+
+        log.info("authentication: {}", authentication);
+        log.info("authentication.getPrincipal(): {}", authentication.getPrincipal());
+        log.info("authentication.getName(): {}", authentication.getName());
+
         return JWT.create().withSubject(authentication.getName())
                 .withClaim("exp", Instant.now().getEpochSecond()+ getLifeTime(type))
+                .withClaim(AUTHORITIES_KEY, authorities)
                 .sign(AL);
     }
 
@@ -57,11 +79,29 @@ public class JWTUtil {
     public VerifyResult verify(String token){
         try{
             DecodedJWT decode = JWT.require(AL).build().verify(token);
-            return VerifyResult.builder().userId(Long.valueOf(decode.getSubject())).result(true).build();
+
+
+            log.info("decode: {}", decode.toString());
+            log.info("decode.getHeader(): {}, decode.getSubject(): {}, decode.getPayload(): {}, decode.getSignature(): {}, decode.getClaims(): {}",
+                    decode.getHeader(), decode.getSubject(), decode.getPayload(), decode.getSignature(), decode.getClaims());
+
+            log.info("decode.getClaim(AUTHORITIES_KEY): {}", decode.getClaim(AUTHORITIES_KEY));
+            return VerifyResult.builder().subject(decode.getSubject()).authorities(decode.getClaim(AUTHORITIES_KEY).toString()).token(token).result(true).build();
         }catch(JWTVerificationException ex){
             DecodedJWT decode = JWT.decode(token);
-            return VerifyResult.builder().userId(Long.valueOf(decode.getSubject())).result(false).build();
+            return VerifyResult.builder().subject(decode.getSubject()).authorities(decode.getClaim(AUTHORITIES_KEY).toString()).token(token).result(false).build();
         }
     }
+
+    public Authentication getAuthentication(VerifyResult result) {
+
+        UserDetails user=new User(result.getSubject(), "", result.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(user, result.getToken(), result.getAuthorities());
+
+
+    }
+
+
 
 }

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -36,12 +37,14 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
 
+
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        System.out.println(loginDto);
+        log.info("loginDto: {}", loginDto);
+
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(),
                 loginDto.getPassword(),
                 null);
@@ -54,6 +57,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
+
+        User user=(User)authResult.getPrincipal();
+        log.info("user.toString(): {}", user.toString());
+
+
+
+
         log.info("authResult.toString(): {}", authResult.toString());
         log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
         log.info("authResult.getCredentials(): {}", authResult.getCredentials());
@@ -61,7 +71,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
 
-        response.addHeader(JWTUtil.AUTH_HEADER, JWTUtil.BEARER + jwtUtil.generate(authResult));
+        response.addHeader(JWTUtil.AUTHORIZATION_HEADER, JWTUtil.BEARER + jwtUtil.generate(authResult));
     }
 
     @Override

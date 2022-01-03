@@ -4,10 +4,13 @@ package com.dangsan.dotjoin.modules.account.controller;
 import com.dangsan.dotjoin.infra.utils.RestResponsePage;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
 import com.dangsan.dotjoin.modules.account.dto.LoginDto;
 import com.dangsan.dotjoin.modules.account.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -26,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -104,17 +110,39 @@ public class AccountController {
 
     @GetMapping("/info")
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal  User user) {
+
+        log.info("컨트롤 접근");
+        log.info("SecurityContextHolder.getContext().getAuthentication().getAuthorities(): {}",SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        log.info("SecurityContextHolder.getContext().getAuthentication().getName(): {}", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if(user!=null){
+            log.info("user.getUsername(): {}", user.getUsername());
+
+        }
+
+        else{
+            log.info("user is null");
+            return new ResponseEntity<>("@AuthenticationPrincipal is not working", HttpStatus.OK);
+        }
+
+//        log.info("user.getUsername(): {}, user.getAuthorities(): {}", user.getUsername(), user.getAuthorities());
+        return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+
     @GetMapping("/list")
-    public RestResponsePage<User> list(
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    public ResponseEntity<?> getAllUser(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ){
-        return RestResponsePage.of(accountService.listUsers(page, size));
+            @RequestParam(defaultValue = "10") Integer size) {
+
+
+
+        log.info("컨트롤 접근");
+
+        log.info("SecurityContextHolder.getContext().getAuthentication().getName(): {}",SecurityContextHolder.getContext().getAuthentication().getName());
+        return new ResponseEntity<>(accountService.getAllUser(), HttpStatus.OK);
     }
 
 //    @GetMapping("/user/{username}")

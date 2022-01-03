@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -106,12 +107,22 @@ public class AccountService implements UserDetailsService {
     }
 
 
-    public Page<Account> listUsers(Integer page, Integer size) {
+    public Page<Account> getAllUser(Integer page, Integer size) {
+
+        System.out.println("서비스 접근");
+
         return accountRepository.findAll(PageRequest.of(page-1, size));
     }
 
-    public Optional<Account> findAccount(Long userId){
-        return accountRepository.findById(userId);
+    public List<Account> getAllUser() {
+
+        System.out.println("서비스 접근");
+
+        return accountRepository.findAll();
+    }
+
+    public Account findAccount(String email){
+        return accountRepository.findByEmail(email);
     }
 
 

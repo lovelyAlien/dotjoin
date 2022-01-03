@@ -3,11 +3,15 @@ package com.dangsan.dotjoin.infra.jwt;
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -15,10 +19,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
+@Slf4j
 public class JWTCheckFilter extends BasicAuthenticationFilter {
     private final AccountService accountService;
-
     private final JWTUtil jwtUtil;
 
 
@@ -35,23 +42,33 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
 
 
-        String token= request.getHeader("Authentication");
+        String requestURI = request.getRequestURI();
+
+        String token= request.getHeader(jwtUtil.AUTHORIZATION_HEADER);
         if(token==null || !token.startsWith("Bearer ")){
             chain.doFilter(request, response);
             return;
         }
 
         VerifyResult result=jwtUtil.verify(token.substring("Bearer ".length()));
+
+
+        log.info("VerifyResult result: {}", result);
+
+
+
         if(result.isResult()){
-            Account account=accountService.findAccount(result.getUserId()).get();
-            UserAccount userAccount=new UserAccount(account);
-
-            Authentication auth= new UsernamePasswordAuthenticationToken(userAccount,
-                    null,
-                    userAccount.getAuthorities());
 
 
+            Authentication auth = jwtUtil.getAuthentication(result);
+
+            log.info("Authentication auth: {}", auth);
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            log.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", auth.getAuthorities(), requestURI);
+        }
+        else {
+            log.info("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
         }
 
 

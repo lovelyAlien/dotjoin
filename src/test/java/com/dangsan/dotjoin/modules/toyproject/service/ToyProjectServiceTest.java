@@ -1,9 +1,11 @@
 package com.dangsan.dotjoin.modules.toyproject.service;
 
 import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
 import com.dangsan.dotjoin.modules.toyproject.repository.ToyProjectRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class ToyProjectServiceTest {
     @Autowired
     private ToyProjectRepository toyProjectRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @BeforeEach
     public  void setUp() {
         requester=new Account();
@@ -39,6 +44,17 @@ class ToyProjectServiceTest {
 
         toyProject=new ToyProject();
 
+    }
+
+
+    @Test
+    void saveAccountTest(){
+        Account newAccount=new Account();
+        newAccount.setEmail("test1234@test.com");
+        newAccount.setPassword("test1234");
+
+        newAccount= accountRepository.save(newAccount);
+        assertEquals(newAccount.getEmail(), "test1234@test.com");
     }
 
     @Test
@@ -94,7 +110,5 @@ class ToyProjectServiceTest {
             assertTrue(toyProject.getRequesters().isEmpty());
 
         }
-
-
     }
 }
