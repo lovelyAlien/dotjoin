@@ -95,24 +95,12 @@ public class AccountService implements UserDetailsService {
 //        return userRepository.findOneWithAuthoritiesByUsername(username);
 //    }
 //
-    @Transactional(readOnly = true)
-    public UserAccount getMyUserWithAuthorities() {
-        Optional<String> email= SecurityUtil.getCurrentEmail();
-        Account account=accountRepository.findByEmail(email.get());
-        return new UserAccount(account);
-    }
+
 
     public void clearAllAccount() {
         accountRepository.deleteAll();
     }
 
-
-    public Page<Account> getAllUser(Integer page, Integer size) {
-
-        System.out.println("서비스 접근");
-
-        return accountRepository.findAll(PageRequest.of(page-1, size));
-    }
 
     public List<Account> getAllUser() {
 
@@ -124,6 +112,9 @@ public class AccountService implements UserDetailsService {
     public Account findAccount(String email){
         return accountRepository.findByEmail(email);
     }
+
+
+
 
 
 }

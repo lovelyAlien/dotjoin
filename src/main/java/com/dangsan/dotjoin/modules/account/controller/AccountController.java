@@ -132,7 +132,7 @@ public class AccountController {
 
 
     @GetMapping("/list")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAllUser(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size) {
@@ -142,12 +142,9 @@ public class AccountController {
         log.info("컨트롤 접근");
 
         log.info("SecurityContextHolder.getContext().getAuthentication().getName(): {}",SecurityContextHolder.getContext().getAuthentication().getName());
+
         return new ResponseEntity<>(accountService.getAllUser(), HttpStatus.OK);
     }
 
-//    @GetMapping("/user/{username}")
-//    @PreAuthorize("hasAnyRole('ADMIN')")
-//    public ResponseEntity<Account> getUserInfo(@PathVariable String username) {
-//        return ResponseEntity.ok(accountService.getUserWithAuthorities(username).get());
-//    }
+
 }

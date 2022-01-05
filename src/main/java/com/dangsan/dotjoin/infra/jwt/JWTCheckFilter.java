@@ -63,9 +63,12 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             Authentication auth = jwtUtil.getAuthentication(result);
 
             log.info("Authentication auth: {}", auth);
+
+            log.info("auth.getAuthorities(): {}", auth.getAuthorities());
+
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            log.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", auth.getAuthorities(), requestURI);
+            log.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", auth.getName(), requestURI);
         }
         else {
             log.info("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);

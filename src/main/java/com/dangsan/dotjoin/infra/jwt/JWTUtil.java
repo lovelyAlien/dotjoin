@@ -8,11 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +32,6 @@ public class JWTUtil {
     private Algorithm AL;
 
 
-
     public static enum TokenType {
         access,
         refresh
@@ -40,16 +43,16 @@ public class JWTUtil {
         return properties;
     }
 
-    public JWTUtil(JWTProperties properties){
+    public JWTUtil(JWTProperties properties) {
         this.properties = properties;
         this.AL = Algorithm.HMAC512(properties.getSecret());
     }
 
-    public String generate(Authentication authentication){
+    public String generate(Authentication authentication) {
         return generate(authentication, TokenType.access);
     }
 
-    public String generate(Authentication authentication, TokenType type){
+    public String generate(Authentication authentication, TokenType type) {
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -61,13 +64,13 @@ public class JWTUtil {
         log.info("authentication.getName(): {}", authentication.getName());
 
         return JWT.create().withSubject(authentication.getName())
-                .withClaim("exp", Instant.now().getEpochSecond()+ getLifeTime(type))
+                .withClaim("exp", Instant.now().getEpochSecond() + getLifeTime(type))
                 .withClaim(AUTHORITIES_KEY, authorities)
                 .sign(AL);
     }
 
     private long getLifeTime(TokenType type) {
-        switch(type){
+        switch (type) {
             case refresh:
                 return this.properties.getTokenRefreshTime();
             case access:
@@ -76,32 +79,55 @@ public class JWTUtil {
         }
     }
 
-    public VerifyResult verify(String token){
-        try{
+    public VerifyResult verify(String token) {
+
+
+        try {
             DecodedJWT decode = JWT.require(AL).build().verify(token);
 
-
-            log.info("decode: {}", decode.toString());
             log.info("decode.getHeader(): {}, decode.getSubject(): {}, decode.getPayload(): {}, decode.getSignature(): {}, decode.getClaims(): {}",
                     decode.getHeader(), decode.getSubject(), decode.getPayload(), decode.getSignature(), decode.getClaims());
 
             log.info("decode.getClaim(AUTHORITIES_KEY): {}", decode.getClaim(AUTHORITIES_KEY));
-            return VerifyResult.builder().subject(decode.getSubject()).authorities(decode.getClaim(AUTHORITIES_KEY).toString()).token(token).result(true).build();
-        }catch(JWTVerificationException ex){
+
+            log.info("decode.getClaim(AUTHORITIES_KEY).toString(): {}", decode.getClaim(AUTHORITIES_KEY).toString());
+
+            log.info("decode.getClaim(AUTHORITIES_KEY).asString(): {}", decode.getClaim(AUTHORITIES_KEY).asString());
+
+
+            Collection<? extends GrantedAuthority> authorities =
+                    Arrays.stream(decode.getClaim(AUTHORITIES_KEY).asString().split(","))
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+
+            return VerifyResult.builder().
+                    subject(decode.getSubject())
+                    .authorities(authorities)
+                    .token(token)
+                    .result(true).build();
+
+        } catch (JWTVerificationException ex) {
             DecodedJWT decode = JWT.decode(token);
-            return VerifyResult.builder().subject(decode.getSubject()).authorities(decode.getClaim(AUTHORITIES_KEY).toString()).token(token).result(false).build();
+
+            return VerifyResult.builder()
+                    .subject(decode.getSubject())
+                    .token(token)
+                    .result(false).build();
         }
     }
 
     public Authentication getAuthentication(VerifyResult result) {
 
-        UserDetails user=new User(result.getSubject(), "", result.getAuthorities());
+        UserDetails user = new User(result.getSubject(), "", result.getAuthorities());
+
+        log.info("result.getAuthorities(): {}", result.getAuthorities());
+
+        log.info("Get Class Type? {}",result.getAuthorities().getClass());
 
         return new UsernamePasswordAuthenticationToken(user, result.getToken(), result.getAuthorities());
 
 
     }
-
 
 
 }

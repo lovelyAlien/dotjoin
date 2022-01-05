@@ -8,6 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix="sp.jwt")
 public class JWTProperties {
     private String secret = "default-secret-value";
-    private long tokenLifeTime = 600;
+    private long tokenLifeTime = 24*60*60; //600
     private long tokenRefreshTime = 24*60*60; // 86400
 }

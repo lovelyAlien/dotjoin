@@ -43,7 +43,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        log.info("loginDto: {}", loginDto);
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(),
                 loginDto.getPassword(),
@@ -56,18 +55,16 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-
+        log.info("authResult:{}", authResult);
+        log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
 
         User user=(User)authResult.getPrincipal();
-        log.info("user.toString(): {}", user.toString());
+
+        log.info("authResult.getAuthorities(): {}", authResult.getAuthorities());
+        log.info("user.getAuthorities(): {}", user.getAuthorities());
 
 
 
-
-        log.info("authResult.toString(): {}", authResult.toString());
-        log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
-        log.info("authResult.getCredentials(): {}", authResult.getCredentials());
-        log.info("authResult.getDetails(): {}", authResult.getDetails());
 
 
 

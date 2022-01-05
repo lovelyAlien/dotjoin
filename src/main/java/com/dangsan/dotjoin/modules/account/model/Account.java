@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.account.model;
 
 import com.dangsan.dotjoin.modules.Timestamped;
 import com.dangsan.dotjoin.modules.toyproject.model.ToyProject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -71,7 +72,7 @@ public class Account extends Timestamped {
     @Column
     private LocalDateTime emailCheckTokenGeneratedAt;
 
-
+    @JsonIgnore
     public List<String> getRoleList(){
         if(this.roles.length()>0){
             return Arrays.asList(this.roles.split(","));
