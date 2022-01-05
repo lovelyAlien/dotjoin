@@ -10,12 +10,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -29,6 +31,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,9 +54,11 @@ public class AccountControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
-
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private JWTUtil jwtUtil;
@@ -98,7 +104,8 @@ public class AccountControllerIntegrationTest {
                 .password("admin1234")
                 .build();
 
-        accountService.processNewAdmin(admin);
+        Account adminAccount=accountService.processNewAdmin(admin);
+        adminAccount.addRole("USER");
 
     }
 
@@ -142,6 +149,28 @@ public class AccountControllerIntegrationTest {
         assertTrue(names.containsAll(Set.of("user", "admin")));
 
 
+    }
+
+    @DisplayName("1. 유저는 또 다른 권한을 가질 수 있다.")
+    @Test
+    void test_2() throws URISyntaxException, JsonProcessingException {
+
+        String accessToken = getToken("admin1234@test.com", "admin1234");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        HttpEntity entity = new HttpEntity("", headers);
+        ResponseEntity<String> response = restTemplate.exchange(uri("/api/users/info"),
+                HttpMethod.GET, entity, String.class);
+
+        log.info("response.getBody(): {}", response.getBody());
+
+        String name=objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<String>() {
+                });
+
+
+        assertEquals(name, "admin");
     }
 
 

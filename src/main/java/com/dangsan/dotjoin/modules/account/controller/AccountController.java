@@ -109,7 +109,7 @@ public class AccountController {
 
 
     @GetMapping("/info")
-//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal  User user) {
 
         log.info("컨트롤 접근");
@@ -145,6 +145,7 @@ public class AccountController {
 
         return new ResponseEntity<>(accountService.getAllUser(), HttpStatus.OK);
     }
+
 
 
 }

@@ -20,10 +20,6 @@ public class UserAccount extends User {
 
         super(account.getEmail(), account.getPassword(), getAuthorities(account.getRoleList()));
 
-
-        System.out.println("===================================");
-        System.out.println(getAuthorities(account.getRoleList()));
-        log.info("Get Class Type? {}",getAuthorities(account.getRoleList()).get(0).getClass());
 //        super(account.getEmail(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.id = account.getId();
         this.nickname=account.getNickname();
