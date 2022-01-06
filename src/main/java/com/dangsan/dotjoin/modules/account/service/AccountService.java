@@ -114,6 +114,13 @@ public class AccountService implements UserDetailsService {
     }
 
 
+    public void addRole(String email, String role){
+        Account account=accountRepository.findByEmail(email);
+
+        account.addRole(role);
+
+    }
+
 
 
 

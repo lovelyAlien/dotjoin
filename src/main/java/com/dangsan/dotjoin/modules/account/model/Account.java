@@ -26,6 +26,8 @@ public class Account extends Timestamped {
     @Column(length=100,nullable = false)
     private String email;
 
+
+    @JsonIgnore
     @Column(length=100,nullable = false)
     private String password; // 로그인 패스워드
 

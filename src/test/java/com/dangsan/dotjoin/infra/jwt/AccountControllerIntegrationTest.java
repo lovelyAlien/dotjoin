@@ -90,6 +90,7 @@ public class AccountControllerIntegrationTest {
     void before() {
 
         accountService.clearAllAccount();
+
         SignUpDto user = SignUpDto.builder()
                 .nickname("user")
                 .email("user1234@test.com")
@@ -104,8 +105,7 @@ public class AccountControllerIntegrationTest {
                 .password("admin1234")
                 .build();
 
-        Account adminAccount=accountService.processNewAdmin(admin);
-        adminAccount.addRole("USER");
+        accountService.processNewAdmin(admin);
 
     }
 
@@ -155,22 +155,32 @@ public class AccountControllerIntegrationTest {
     @Test
     void test_2() throws URISyntaxException, JsonProcessingException {
 
-        String accessToken = getToken("admin1234@test.com", "admin1234");
+        accountService.addRole("user1234@test.com", "ADMIN");
+
+
+        String accessToken = getToken("user1234@test.com", "user1234");
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         HttpEntity entity = new HttpEntity("", headers);
-        ResponseEntity<String> response = restTemplate.exchange(uri("/api/users/info"),
+
+
+
+        ResponseEntity<String> response = restTemplate.exchange(uri("/api/users/list"),
                 HttpMethod.GET, entity, String.class);
 
         log.info("response.getBody(): {}", response.getBody());
 
-        String name=objectMapper.readValue(
+        List<Account> accounts= objectMapper.readValue(
                 response.getBody(),
-                new TypeReference<String>() {
+                new TypeReference<List<Account>>() {
                 });
 
 
-        assertEquals(name, "admin");
+        assertEquals(2, accounts.size());
+
+        Set<String> names= accounts.stream().map(account->account.getNickname()).collect(Collectors.toSet());
+        assertTrue(names.containsAll(Set.of("user", "admin")));
     }
 
 
