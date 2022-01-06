@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class JWTUtil {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String REFRESH_HEADER = "refresh-token";
     public static final String BEARER = "Bearer ";
     private static final String AUTHORITIES_KEY = "auth";
-
+    public static final String REFRESH_HEADER = "refresh-token";
+    private static final String EXPIRATION_TIME = "exp";
 
     private Algorithm AL;
 
@@ -64,7 +64,7 @@ public class JWTUtil {
         log.info("authentication.getName(): {}", authentication.getName());
 
         return JWT.create().withSubject(authentication.getName())
-                .withClaim("exp", Instant.now().getEpochSecond() + getLifeTime(type))
+                .withClaim(EXPIRATION_TIME, Instant.now().getEpochSecond() + getLifeTime(type))
                 .withClaim(AUTHORITIES_KEY, authorities)
                 .sign(AL);
     }

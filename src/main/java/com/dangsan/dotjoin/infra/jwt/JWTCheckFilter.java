@@ -44,13 +44,13 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
 
         String requestURI = request.getRequestURI();
 
-        String token= request.getHeader(jwtUtil.AUTHORIZATION_HEADER);
-        if(token==null || !token.startsWith("Bearer ")){
+        String token= request.getHeader(JWTUtil.AUTHORIZATION_HEADER);
+        if(token==null || !token.startsWith(JWTUtil.BEARER)){
             chain.doFilter(request, response);
             return;
         }
 
-        VerifyResult result=jwtUtil.verify(token.substring("Bearer ".length()));
+        VerifyResult result=jwtUtil.verify(token.substring(JWTUtil.BEARER.length()));
 
 
         log.info("VerifyResult result: {}", result);

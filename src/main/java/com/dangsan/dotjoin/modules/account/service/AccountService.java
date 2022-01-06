@@ -7,6 +7,7 @@ import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,8 +33,7 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    private final TemplateEngine templateEngine;
-//    private final EmailService emailService;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -82,6 +82,7 @@ public class AccountService implements UserDetailsService {
 
 
 
+
 //    public void login(Account account) {
 //        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 //                new UserAccount(account),
@@ -116,12 +117,9 @@ public class AccountService implements UserDetailsService {
 
     public void addRole(String email, String role){
         Account account=accountRepository.findByEmail(email);
-
         account.addRole(role);
 
+
     }
-
-
-
 
 }

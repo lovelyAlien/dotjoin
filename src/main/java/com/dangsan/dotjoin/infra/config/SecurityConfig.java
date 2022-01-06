@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.infra.config;
 
 import com.dangsan.dotjoin.infra.jwt.JWTCheckFilter;
 import com.dangsan.dotjoin.infra.jwt.JWTLoginFilter;
+import com.dangsan.dotjoin.infra.jwt.JWTProperties;
 import com.dangsan.dotjoin.infra.jwt.JWTUtil;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,18 +23,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AccountService accountService;
+
+    private final AccountService accountService;
+    private final JWTUtil jwtUtil;
+    private final ObjectMapper objectMapper;
+    private final JWTProperties jwtProperties;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JWTUtil jwtUtil;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    public SecurityConfig(AccountService accountService, ObjectMapper objectMapper, JWTProperties jwtProperties){
+        this.accountService=accountService;
+        this.objectMapper=objectMapper;
+        this.jwtProperties=jwtProperties;
+        this.jwtUtil=new JWTUtil(jwtProperties);
 
+    }
 
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
