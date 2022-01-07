@@ -110,12 +110,12 @@ public class AccountController {
 
     @GetMapping("/info")
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
-    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal  User user) {
+    public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
 
         log.info("컨트롤 접근");
         log.info("SecurityContextHolder.getContext().getAuthentication().getAuthorities(): {}",SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         log.info("SecurityContextHolder.getContext().getAuthentication().getName(): {}", SecurityContextHolder.getContext().getAuthentication().getName());
-
+        log.info("user.getUsername(): {}, user.getAuthorities(): {}", user.getUsername(), user.getAuthorities());
         if(user!=null){
             log.info("user.getUsername(): {}", user.getUsername());
 
@@ -126,7 +126,7 @@ public class AccountController {
             return new ResponseEntity<>("@AuthenticationPrincipal is not working", HttpStatus.OK);
         }
 
-//        log.info("user.getUsername(): {}, user.getAuthorities(): {}", user.getUsername(), user.getAuthorities());
+
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
     }
 

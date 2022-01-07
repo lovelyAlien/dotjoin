@@ -110,7 +110,7 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findAll();
     }
 
-    public Account findAccount(String email){
+    public Account findAccountByEmail(String email){
         return accountRepository.findByEmail(email);
     }
 

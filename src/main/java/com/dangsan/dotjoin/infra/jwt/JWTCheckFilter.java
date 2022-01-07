@@ -3,6 +3,7 @@ package com.dangsan.dotjoin.infra.jwt;
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -35,7 +37,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
         this.jwtUtil=jwtUtil;
     }
 
-
+    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -59,8 +61,15 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
 
         if(result.isResult()){
 
+            Account account = accountService.findAccountByEmail(result.getEmail());
 
-            Authentication auth = jwtUtil.getAuthentication(result);
+            if(account==null){
+                throw new UsernameNotFoundException("알 수 없는 사용자: "+ result.getEmail());
+            }
+
+            UserAccount user=new UserAccount(account);
+
+            Authentication auth = jwtUtil.getAuthentication(user);
 
             log.info("Authentication auth: {}", auth);
 

@@ -1,10 +1,11 @@
 package com.dangsan.dotjoin.infra.jwt;
 
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.dangsan.dotjoin.modules.account.dto.LoginDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.model.UserAccount;
-import com.fasterxml.jackson.core.JsonToken;
+import com.dangsan.dotjoin.modules.account.service.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,15 +25,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class RefreshableJWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
     private final JWTUtil jwtUtil;
+    private final AccountService accountService;
     private final AuthenticationManager authenticationManager;
 
-    public JWTLoginFilter(ObjectMapper objectMapper, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
+    public RefreshableJWTLoginFilter(ObjectMapper objectMapper, JWTUtil jwtUtil, AccountService accountService, AuthenticationManager authenticationManager) {
         this.objectMapper = objectMapper;
         this.jwtUtil = jwtUtil;
+        this.accountService=accountService;
         this.authenticationManager = authenticationManager;
 
         setFilterProcessesUrl("/api/auth/login");
@@ -44,10 +49,37 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(),
-                loginDto.getPassword(),
-                null);
-        return authenticationManager.authenticate(token);
+        // id password login
+        if(loginDto.getType().equals(LoginDto.Type.login)){
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    loginDto.getEmail(), loginDto.getPassword(), null
+            );
+            return authenticationManager.authenticate(authToken);
+        }else if(loginDto.getType().equals(LoginDto.Type.refresh)){
+            // refresh token
+            if(loginDto.getRefreshToken()==null)
+                throw new IllegalArgumentException("리프레쉬 토큰이 필요함. : "+loginDto.getRefreshToken());
+
+            VerifyResult result = jwtUtil.verify(loginDto.getRefreshToken());
+            if(result.isResult()){
+                Account account = accountService.findAccountByEmail(result.getEmail());
+
+                if(account==null){
+                    throw new UsernameNotFoundException("알 수 없는 사용자: "+ result.getEmail());
+                }
+
+                UserAccount user=new UserAccount(account);
+
+                Authentication auth = jwtUtil.getAuthentication(user);
+
+                return auth;
+            }else{
+                throw new TokenExpiredException("리프레쉬 토큰 만료");
+            }
+        }else{
+            throw new IllegalArgumentException("알 수 없는 타입 : "+loginDto.getType());
+        }
+
     }
 
     @Override
@@ -55,8 +87,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-
-
+        log.info("authResult:{}", authResult);
         log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
 
         User user=(User)authResult.getPrincipal();

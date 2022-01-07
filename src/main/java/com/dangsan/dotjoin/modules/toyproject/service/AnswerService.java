@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 
 
 import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireAllAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;

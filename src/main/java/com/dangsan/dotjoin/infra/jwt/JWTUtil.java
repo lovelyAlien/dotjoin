@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
+import com.dangsan.dotjoin.modules.account.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,11 +39,7 @@ public class JWTUtil {
         refresh
     }
 
-    JWTProperties properties;
-
-    public JWTProperties getProperties() {
-        return properties;
-    }
+    private final JWTProperties properties;
 
     public JWTUtil(JWTProperties properties) {
         this.properties = properties;
@@ -54,18 +52,19 @@ public class JWTUtil {
 
     public String generate(Authentication authentication, TokenType type) {
 
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+//        String authorities = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.joining(","));
 
 
         log.info("authentication: {}", authentication);
         log.info("authentication.getPrincipal(): {}", authentication.getPrincipal());
         log.info("authentication.getName(): {}", authentication.getName());
 
+
         return JWT.create().withSubject(authentication.getName())
                 .withClaim(EXPIRATION_TIME, Instant.now().getEpochSecond() + getLifeTime(type))
-                .withClaim(AUTHORITIES_KEY, authorities)
+//                .withClaim(AUTHORITIES_KEY, authorities)
                 .sign(AL);
     }
 
@@ -88,43 +87,39 @@ public class JWTUtil {
             log.info("decode.getHeader(): {}, decode.getSubject(): {}, decode.getPayload(): {}, decode.getSignature(): {}, decode.getClaims(): {}",
                     decode.getHeader(), decode.getSubject(), decode.getPayload(), decode.getSignature(), decode.getClaims());
 
-            log.info("decode.getClaim(AUTHORITIES_KEY): {}", decode.getClaim(AUTHORITIES_KEY));
+//            log.info("decode.getClaim(AUTHORITIES_KEY): {}", decode.getClaim(AUTHORITIES_KEY));
+//
+//            log.info("decode.getClaim(AUTHORITIES_KEY).toString(): {}", decode.getClaim(AUTHORITIES_KEY).toString());
+//
+//            log.info("decode.getClaim(AUTHORITIES_KEY).asString(): {}", decode.getClaim(AUTHORITIES_KEY).asString());
 
-            log.info("decode.getClaim(AUTHORITIES_KEY).toString(): {}", decode.getClaim(AUTHORITIES_KEY).toString());
-
-            log.info("decode.getClaim(AUTHORITIES_KEY).asString(): {}", decode.getClaim(AUTHORITIES_KEY).asString());
 
 
-            Collection<? extends GrantedAuthority> authorities =
-                    Arrays.stream(decode.getClaim(AUTHORITIES_KEY).asString().split(","))
-                            .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
+
+//            Collection<? extends GrantedAuthority> authorities =
+//                    Arrays.stream(decode.getClaim(AUTHORITIES_KEY).asString().split(","))
+//                            .map(SimpleGrantedAuthority::new)
+//                            .collect(Collectors.toList());
+
 
             return VerifyResult.builder().
-                    subject(decode.getSubject())
-                    .authorities(authorities)
-                    .token(token)
+                    email(decode.getSubject())
+//                    .authorities(authorities)
                     .result(true).build();
 
         } catch (JWTVerificationException ex) {
             DecodedJWT decode = JWT.decode(token);
 
             return VerifyResult.builder()
-                    .subject(decode.getSubject())
-                    .token(token)
+                    .email(decode.getSubject())
                     .result(false).build();
         }
     }
 
-    public Authentication getAuthentication(VerifyResult result) {
+    public Authentication getAuthentication(UserAccount user) {
 
-        UserDetails user = new User(result.getSubject(), "", result.getAuthorities());
 
-        log.info("result.getAuthorities(): {}", result.getAuthorities());
-
-        log.info("Get Class Type? {}",result.getAuthorities().getClass());
-
-        return new UsernamePasswordAuthenticationToken(user, result.getToken(), result.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
 
     }
