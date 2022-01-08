@@ -48,9 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class  AccountControllerIntegrationTest {
-    @LocalServerPort
-    private int port;
+public class  AccountControllerIntegrationTest extends IntegrationTest{
 
     @Autowired
     private AccountService accountService;
@@ -62,11 +60,6 @@ public class  AccountControllerIntegrationTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JWTUtil jwtUtil;
-
-    private RestTemplate restTemplate = new RestTemplate();
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private UserTestHelper userTestHelper;
 
@@ -88,35 +81,12 @@ public class  AccountControllerIntegrationTest {
 
     }
 
-    private URI uri(String path) throws URISyntaxException {
-        return new URI(format("http://localhost:%d%s", port, path));
-    }
-
-    String getToken(String email, String password) throws URISyntaxException {
-        LoginDto loginDto = LoginDto.builder().email(email)
-                .password(password)
-                .build();
-
-        HttpEntity<LoginDto> body = new HttpEntity<>(loginDto);
-        ResponseEntity<String> response = restTemplate.exchange(uri("/api/auth/login"), HttpMethod.POST, body, String.class);
-        assertEquals(200, response.getStatusCodeValue());
-        return response.getHeaders().get(JWTUtil.AUTHORIZATION_HEADER).get(0).substring(JWTUtil.BEARER.length());
-
-
-    }
-
-    private HttpEntity getAuthHeaderEntity(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(JWTUtil.AUTHORIZATION_HEADER, JWTUtil.BEARER + accessToken);
-        HttpEntity entity = new HttpEntity("", headers);
-        return entity;
-    }
 
     @DisplayName("1. admin 유저는 userList 를 가져올 수 있다.")
     @Test
     void test_1() throws URISyntaxException, JsonProcessingException {
 
-        String accessToken = getToken("admin1234@test.com", "admin1234");
+        String accessToken = getToken("admin1234@test.com", "admin1234").getAccessToken();
 
         log.info("accessToken: {}", accessToken);
 
@@ -145,7 +115,7 @@ public class  AccountControllerIntegrationTest {
 
         accountService.addRole("user1234@test.com", "ADMIN");
 
-        String accessToken = getToken("user1234@test.com", "user1234");
+        String accessToken = getToken("user1234@test.com", "user1234").getAccessToken();
 
         ResponseEntity<String> response = restTemplate.exchange(uri("/api/users/list"),
                 HttpMethod.GET, getAuthHeaderEntity(accessToken), String.class);

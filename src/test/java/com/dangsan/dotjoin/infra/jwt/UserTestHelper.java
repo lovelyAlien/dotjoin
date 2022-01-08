@@ -4,11 +4,10 @@ import com.dangsan.dotjoin.modules.account.model.Account;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,23 +22,26 @@ public class UserTestHelper {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Account createUser(String nickname) throws DuplicateKeyException {
+    public Account createUser(String nickname, String... roles){
+        StringBuilder sb=new StringBuilder();
+
+        for(String role: roles){
+                if(sb.toString().equals(""))
+                    sb.append(role);
+                else{
+                    sb.append(",");
+                    sb.append(role);
+                }
+        }
+
+        String roleList=sb.toString();
         Account account = Account.builder()
                 .nickname(nickname)
                 .email(nickname+"1234@test.com")
                 .password(passwordEncoder.encode(nickname+"1234"))
+                .roles(roleList)
                 .build();
         return accountRepository.save(account);
-    }
-
-    public Account createUser(String nickname, String... roles){
-        Account account = createUser(nickname);
-
-
-
-        Stream.of(roles).forEach(role-> userService.addRole(account.getEmail(), role));
-
-        return account;
     }
 
     public void assertUser(Account account, String nickname){

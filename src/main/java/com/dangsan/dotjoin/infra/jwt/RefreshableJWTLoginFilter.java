@@ -16,8 +16,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StringUtils;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +98,8 @@ public class RefreshableJWTLoginFilter extends UsernamePasswordAuthenticationFil
 
 
 
-        response.addHeader(JWTUtil.AUTHORIZATION_HEADER, JWTUtil.BEARER + jwtUtil.generate(authResult));
+        response.addHeader(JWTUtil.AUTHORIZATION_HEADER, JWTUtil.BEARER + jwtUtil.generate(authResult, JWTUtil.TokenType.access));
+        response.addHeader(JWTUtil.REFRESH_HEADER, jwtUtil.generate(authResult, JWTUtil.TokenType.refresh));
     }
 
     @Override

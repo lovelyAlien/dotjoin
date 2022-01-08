@@ -39,7 +39,11 @@ public class JWTUtil {
         refresh
     }
 
-    private final JWTProperties properties;
+    JWTProperties properties;
+
+    public JWTProperties getProperties(){
+        return properties;
+    }
 
     public JWTUtil(JWTProperties properties) {
         this.properties = properties;

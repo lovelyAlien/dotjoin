@@ -40,15 +40,6 @@ public class AccountController {
     //    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello");
-    }
-
-    @PostMapping("/test-redirect")
-    public void testRedirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/api/users");
-    }
 
     @GetMapping("/test/oauth/login")
     public @ResponseBody
