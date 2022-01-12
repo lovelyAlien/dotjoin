@@ -43,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-    @Autowired
-    private OidcUserToSiteUserFilter oidcUserToSiteUserFilter;
+//    @Autowired
+//    private OidcUserToSiteUserFilter oidcUserToSiteUserFilter;
 
 
 
@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 csrf().disable()
                 .formLogin(
                         config->{
-                            config.loginPage("/login")
+                            config.loginPage("/api/users/login")
                                     .successForwardUrl("/")
                                     .failureForwardUrl("/login?error=true");
                         }
@@ -93,15 +93,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-        http
-                .oauth2Login(oauth -> {
-                    oauth.userInfoEndpoint(userinfo -> {
-
-                        userinfo.oidcUserService(customOidcUserService);
-
-                    });
-                })
-                .addFilterAfter(oidcUserToSiteUserFilter, OAuth2LoginAuthenticationFilter.class);
+//        http
+//                .oauth2Login(oauth -> {
+//                    oauth.userInfoEndpoint(userinfo -> {
+//
+//                        userinfo.oidcUserService(customOidcUserService);
+//
+//                    });
+//                })
+//                .addFilterAfter(oidcUserToSiteUserFilter, OAuth2LoginAuthenticationFilter.class);
 
 //                .loginPage("/login"); //구글 로그인이 완료된 후 후처리가 필요함.
 //                .userInfoEndpoint()

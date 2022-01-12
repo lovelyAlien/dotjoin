@@ -19,7 +19,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class OidcUserToSiteUserFilter implements Filter {
 
