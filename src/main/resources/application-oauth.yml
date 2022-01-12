@@ -4,33 +4,38 @@ spring:
       client:
         registration:
           kakao:
-            client-id: <your id>
-            client-secret: <your secret>
-            redirect-uri: <your url>/login/oauth2/code/kakao
+            client-id: fd3419264a314ad92f902292bae304de
+            client-secret: UpxPoMUqdLdX19WnlCj1rCEsNXDKjY7Q
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             authorization-grant-type: authorization_code
-            client-authentication-method: POST
+#            client-authentication-method: POST
             client-name: Kakao
-            scope:
-              - profile
-              - account_email
+#            scope:
+#              - profile
+#              - account_email
+
           naver:
-            client-id: <your id>
-            client-secret: <your secret>
-            redirect-uri:  <your url>/login/oauth2/code/naver
+            client-id: z29x4SqtznHJkCgZIZXU
+            client-secret: ZV_23u69Qd
+            redirect-uri:  '{baseUrl}/login/oauth2/code/{registrationId}'
             authorization-grant-type: authorization_code
-            scope:
-              - name
-              - email
+            client-name: Naver
+#            scope:
+#              - name
+#              - email
+
           google:
             client-id: 574401249550-0gj788qm1hol2grp4icebd4uslhoae1c.apps.googleusercontent.com
             client-secret: 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
-            scope:
-              - profile
-              - email
+            client-name: Google
+#            scope:
+#              - profile
+#              - email
 
           github:
             client-id: 11262b701abe5fd6d608
             client-secret: 9170211b623bb88ed10b0561cbd757af9c0eeb0f
+            client-name: Github
 
         provider:
           kakao:

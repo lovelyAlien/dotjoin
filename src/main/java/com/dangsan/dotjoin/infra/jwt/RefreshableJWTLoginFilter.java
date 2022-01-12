@@ -60,7 +60,7 @@ public class RefreshableJWTLoginFilter extends UsernamePasswordAuthenticationFil
 
             VerifyResult result = jwtUtil.verify(loginDto.getRefreshToken());
             if(result.isResult()){
-                Account account = accountService.findAccountByEmail(result.getEmail());
+                Account account = accountService.findAccountByEmail(result.getEmail()).get();
 
                 if(account==null){
                     throw new UsernameNotFoundException("알 수 없는 사용자: "+ result.getEmail());

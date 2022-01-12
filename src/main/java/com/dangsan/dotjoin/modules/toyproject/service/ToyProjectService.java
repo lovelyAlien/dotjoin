@@ -94,7 +94,7 @@ public class ToyProjectService {
     public void requestJoinToyProject(User user, Long projectId) throws Exception {
         ToyProject toyProject=toyProjectRepository.findById(projectId).get();
 
-        Account requester=accountRepository.findByEmail(user.getUsername());
+        Account requester=accountRepository.findByEmail(user.getUsername()).get();
 
         if(toyProject.getRequesters().contains(requester))
             throw new RuntimeException("Already requested");
@@ -108,7 +108,7 @@ public class ToyProjectService {
     @Transactional
     public void acceptJoinToyProject(User user, Long requesterId, Long toyProjectId) throws Exception {
 
-        Account manager= accountRepository.findByEmail(user.getUsername());
+        Account manager= accountRepository.findByEmail(user.getUsername()).get();
         Account requester=accountRepository.findById(requesterId).get();
         String[] authorities=manager.getRoles().split(",");
         if(Arrays.asList(authorities).contains("ADMIN")){

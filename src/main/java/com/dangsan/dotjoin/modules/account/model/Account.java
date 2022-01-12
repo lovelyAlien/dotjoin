@@ -52,6 +52,7 @@ public class Account extends Timestamped {
     // OAuth를 위해 구성한 추가 필드 2개
     @Column
     private String provider;
+
     @Column
     private String providerId;
 
@@ -62,10 +63,10 @@ public class Account extends Timestamped {
 //    private LocalDateTime modifiedDate; // 정보 변경일
 
     @Column
-    private String verify;
+    private boolean verify;
 
     @Column
-    private String roles; //USER, ADMIN
+    private String roles; //USER,ADMIN
 
 
     @Column

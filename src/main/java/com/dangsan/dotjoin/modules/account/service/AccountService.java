@@ -38,7 +38,7 @@ public class AccountService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(emailOrNickname);
+        Account account = accountRepository.findByEmail(emailOrNickname).get();
         if (account == null) {
             account = accountRepository.findByNickname(emailOrNickname);
         }
@@ -52,7 +52,7 @@ public class AccountService implements UserDetailsService {
 
 
     public Account processNewUser(SignUpDto signUpForm) {
-        if(accountRepository.existsByEmail(signUpForm.getEmail())||accountRepository.existsByNickname(signUpForm.getNickname())){
+        if (accountRepository.existsByEmail(signUpForm.getEmail()) || accountRepository.existsByNickname(signUpForm.getNickname())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
         Account newAccount = saveNewAccount(signUpForm, "USER");
@@ -62,7 +62,7 @@ public class AccountService implements UserDetailsService {
 
 
     public Account processNewAdmin(SignUpDto signUpForm) {
-        if(accountRepository.existsByEmail(signUpForm.getEmail())||accountRepository.existsByNickname(signUpForm.getNickname())){
+        if (accountRepository.existsByEmail(signUpForm.getEmail()) || accountRepository.existsByNickname(signUpForm.getNickname())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
         Account newAccount = saveNewAccount(signUpForm, "ADMIN");
@@ -78,9 +78,6 @@ public class AccountService implements UserDetailsService {
         account.generateEmailCheckToken();
         return accountRepository.save(account);
     }
-
-
-
 
 
 //    public void login(Account account) {
@@ -110,13 +107,24 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findAll();
     }
 
-    public Account findAccountByEmail(String email){
+    public Optional<Account> findAccountByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
 
+    public Account findAccountByNickname(String nickname) {
+        return accountRepository.findByNickname(nickname);
+    }
 
-    public void addRole(String email, String role){
-        Account account=accountRepository.findByEmail(email);
+    public Account save(Account account) {
+        return accountRepository.save(account);
+    }
+
+    public Optional<Account> findAccountByProviderId(String providerId) {
+        return accountRepository.findByProviderId(providerId);
+    }
+
+    public void addRole(String email, String role) {
+        Account account = accountRepository.findByEmail(email).get();
         account.addRole(role);
 
 

@@ -51,7 +51,7 @@ public class AnswerService {
 
     public Long registerAnswer(Long questionId, User user){
         Question question= questionRepository.findById(questionId).get();
-        Account answerer= accountRepository.findByEmail(user.getUsername());
+        Account answerer= accountRepository.findByEmail(user.getUsername()).get();
 
         Answer answer= answerRepository.save(new Answer(question, answerer));
 
