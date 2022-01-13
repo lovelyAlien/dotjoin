@@ -16,7 +16,6 @@ public class CustomOidcUserService extends OidcUserService {
 
         OidcUser user= super.loadUser(userRequest);
 
-
         return  user;
     }
 }

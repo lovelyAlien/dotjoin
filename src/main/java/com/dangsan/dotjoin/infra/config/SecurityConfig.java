@@ -37,19 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CustomOidcUserService customOidcUserService;
+//    @Autowired
+//    private CustomOidcUserService customOidcUserService;
 
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
 //    @Autowired
 //    private OidcUserToSiteUserFilter oidcUserToSiteUserFilter;
-
-
-
-
-
 
 
     public SecurityConfig(AccountService accountService, ObjectMapper objectMapper, JWTUtil jwtUtil) {
@@ -80,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 csrf().disable()
                 .formLogin(
-                        config->{
+                        config -> {
                             config.loginPage("/api/users/login")
                                     .successForwardUrl("/")
                                     .failureForwardUrl("/login?error=true");
@@ -93,16 +88,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-//        http
-//                .oauth2Login(oauth -> {
-//                    oauth.userInfoEndpoint(userinfo -> {
-//
-//                        userinfo.oidcUserService(customOidcUserService);
-//
-//                    });
-//                })
-//                .addFilterAfter(oidcUserToSiteUserFilter, OAuth2LoginAuthenticationFilter.class);
+        http
+                .oauth2Login(oauth -> {
+                    oauth
+                            .userInfoEndpoint(userinfo -> {
+                                userinfo.userService(customOAuth2UserService);
 
+//                        userinfo.oidcUserService(customOidcUserService);
+
+                            })
+                            .loginPage("/api/users/login");
+                });
+
+//                .addFilterAfter(oidcUserToSiteUserFilter, OAuth2LoginAuthenticationFilter.class);
+//
 //                .loginPage("/login"); //구글 로그인이 완료된 후 후처리가 필요함.
 //                .userInfoEndpoint()
 //                .userService(oAuth2UserService);
