@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.infra.oauth;
 
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OAuth2Controller {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/oauth2/info")
-    public String getOAuth2SecuredInfo(@AuthenticationPrincipal User user) {
+    public String getOAuth2SecuredInfo(@AuthenticationPrincipal UserAccount user) {
         log.info("user.getAuthorities(): {}", user.getAuthorities());
         log.info("SecurityContextHolder.getContext().getAuthentication().getAuthorities(): {}",
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities());

@@ -87,11 +87,8 @@ public class RefreshableJWTLoginFilter extends UsernamePasswordAuthenticationFil
                                             Authentication authResult) throws IOException, ServletException {
         log.info("authResult:{}", authResult);
         log.info("authResult.getPrincipal(): {}", authResult.getPrincipal());
-
-        User user=(User)authResult.getPrincipal();
-
         log.info("authResult.getAuthorities(): {}", authResult.getAuthorities());
-        log.info("user.getAuthorities(): {}", user.getAuthorities());
+
 
 
 

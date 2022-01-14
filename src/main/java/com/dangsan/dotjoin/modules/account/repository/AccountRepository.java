@@ -18,7 +18,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByProviderId(String providerId);
 
-    Optional<Account> findByProviderAndProviderId(String)
+    Optional<Account> findByProviderAndProviderId(String provider, String providerId);
 
 
 

@@ -81,11 +81,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                     .failureForwardUrl("/login?error=true");
                         }
                 )
-                .addFilter(refreshableJWTLoginFilter)
-                .addFilter(jwtCheckFilter)
+                .addFilter(refreshableJWTLoginFilter);
+//                .addFilter(jwtCheckFilter)
 
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
         http

@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Slf4j
-public class UserAccount implements UserDetails {
+public class UserAccount implements UserDetails, OAuth2User {
     private static final long serialVersionUID = 1L;
     //    private Long  id;
 //    private String nickname;
@@ -73,6 +74,19 @@ public class UserAccount implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return account.getId()+"";
+    }
+
 
 //
 //    public UserAccount(Account account) {

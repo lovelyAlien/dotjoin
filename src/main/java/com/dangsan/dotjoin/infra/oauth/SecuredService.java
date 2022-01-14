@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecuredService {
 
-    @PreAuthorize("hasAnyAuthority('ROLE_GOOGLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public String getSecuredInfo(){
         return "secured info: google-secret";
     }
