@@ -23,7 +23,7 @@ public class Account extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length=100,nullable = false)
+    @Column(length=100)
     private String email;
 
 
@@ -35,7 +35,7 @@ public class Account extends Timestamped {
     private String nickname; // 계정 아이디
 
     @Column
-    private String username; // 이름
+    private String name; // 이름
 
     @Column
     private String profileImgUrl;

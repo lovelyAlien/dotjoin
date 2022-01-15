@@ -52,7 +52,10 @@ public class UserAccount implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        return account.getPassword();
+        if(account.getEmail()==null)
+            return account.getNickname();
+
+        return account.getEmail();
     }
 
     @Override

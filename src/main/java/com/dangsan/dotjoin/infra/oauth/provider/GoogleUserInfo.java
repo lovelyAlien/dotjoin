@@ -1,24 +1,25 @@
-package com.dangsan.dotjoin.infra.oauth;
+package com.dangsan.dotjoin.infra.oauth.provider;
 
 import java.util.Map;
 
-public class NaverUserInfo implements OAuth2UserInfo{
+public class GoogleUserInfo implements OAuth2UserInfo{
 
     private Map<String, Object> attributes;
 
-    public NaverUserInfo(Map<String, Object> attributes) {
+    public GoogleUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 
     @Override
     public String getProviderId() {
-        return (String) attributes.get("id");
+        return (String) attributes.get("sub");
     }
 
     @Override
     public String getName() {
         return (String) attributes.get("name");
     }
+
 
     @Override
     public String getEmail() {
@@ -27,7 +28,7 @@ public class NaverUserInfo implements OAuth2UserInfo{
 
     @Override
     public String getProvider() {
-        return "naver";
+        return "google";
     }
 
 }

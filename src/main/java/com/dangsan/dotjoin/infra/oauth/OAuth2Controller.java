@@ -34,7 +34,7 @@ public class OAuth2Controller {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/oauth2/user")
-    public User getOAuth2User(@AuthenticationPrincipal User user) {
+    public UserAccount getOAuth2User(@AuthenticationPrincipal UserAccount user) {
 
         return user;
     }

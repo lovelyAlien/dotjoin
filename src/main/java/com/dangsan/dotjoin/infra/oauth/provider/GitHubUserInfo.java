@@ -1,18 +1,18 @@
-package com.dangsan.dotjoin.infra.oauth;
+package com.dangsan.dotjoin.infra.oauth.provider;
 
 import java.util.Map;
 
-public class FaceBookUserInfo implements OAuth2UserInfo{
+public class GitHubUserInfo implements OAuth2UserInfo {
 
     private Map<String, Object> attributes;
 
-    public FaceBookUserInfo(Map<String, Object> attributes) {
+    public GitHubUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 
     @Override
     public String getProviderId() {
-        return (String) attributes.get("id");
+        return (String) attributes.get("id").toString();
     }
 
     @Override
@@ -25,8 +25,9 @@ public class FaceBookUserInfo implements OAuth2UserInfo{
         return (String) attributes.get("email");
     }
 
+
     @Override
     public String getProvider() {
-        return "facebook";
+        return "github";
     }
 }

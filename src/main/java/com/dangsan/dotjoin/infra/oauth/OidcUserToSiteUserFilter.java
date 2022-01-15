@@ -42,7 +42,7 @@ public class OidcUserToSiteUserFilter implements Filter {
                                             .providerId("google_" + oidcUser.getSubject())
                                             .provider("google")
                                             .email(oidcUser.getEmail())
-                                            .username(oidcUser.getFullName())
+                                            .name(oidcUser.getFullName())
                                             .profileImgUrl(oidcUser.getPicture())
                                             .password(bCryptPasswordEncoder.encode("google_password"))
                                             .roles("USER,GOOGLE_USER")
