@@ -1,40 +1,27 @@
 package com.dangsan.dotjoin.modules.account.controller;
 
 
-import com.dangsan.dotjoin.infra.utils.RestResponsePage;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
-import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.service.AccountService;
-import com.dangsan.dotjoin.modules.account.dto.LoginDto;
-import com.dangsan.dotjoin.modules.account.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
 public class AccountController {
     private final AccountService accountService;
     //    private final TokenProvider tokenProvider;
@@ -43,7 +30,7 @@ public class AccountController {
 
     @GetMapping("/sign-up")
     public String signUpForm() {
-        return "signUp";
+        return "signup";
     }
 
     @PostMapping("/sign-up")
@@ -59,7 +46,7 @@ public class AccountController {
 
     @GetMapping("/login")
     public String loginForm() {
-        return "/login";
+        return "login";
     }
 
 //    @PostMapping("/login")
@@ -86,7 +73,7 @@ public class AccountController {
 //    }
 
 
-    @GetMapping("/info")
+    @GetMapping("/users/me")
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<?> getMyUserInfo(@AuthenticationPrincipal User user) {
 
@@ -109,7 +96,7 @@ public class AccountController {
     }
 
 
-    @GetMapping("/list")
+    @GetMapping("/users/all")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAllUser(
             @RequestParam(defaultValue = "1") Integer page,

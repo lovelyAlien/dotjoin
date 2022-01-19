@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
+@RequestMapping("/toyprojects/{projectId}/subprojects/{subProjectId}")
 public class KanbanController {
     private final KanbanService kanbanService;
 

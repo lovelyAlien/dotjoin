@@ -36,7 +36,7 @@ public class RefreshableJWTLoginFilter extends UsernamePasswordAuthenticationFil
         this.accountService=accountService;
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl("/api/auth/login");
+        setFilterProcessesUrl("/auth/login");
     }
 
 

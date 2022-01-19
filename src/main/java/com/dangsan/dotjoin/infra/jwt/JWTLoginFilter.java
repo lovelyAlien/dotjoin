@@ -33,7 +33,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl("/api/auth/login");
+        setFilterProcessesUrl("/auth/login");
     }
 
 

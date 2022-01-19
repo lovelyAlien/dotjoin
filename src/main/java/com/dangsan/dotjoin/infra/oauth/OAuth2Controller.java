@@ -11,25 +11,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class OAuth2Controller {
-
-    private final SecuredService securedService;
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/oauth2/info")
-    public String getOAuth2SecuredInfo(@AuthenticationPrincipal UserAccount user) {
-        log.info("user.getAuthorities(): {}", user.getAuthorities());
-        log.info("SecurityContextHolder.getContext().getAuthentication().getAuthorities(): {}",
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        return securedService.getSecuredInfo();
-
-    }
 
 
     @PreAuthorize("isAuthenticated()")
@@ -41,7 +29,14 @@ public class OAuth2Controller {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/site/user")
-    public User getSiteUser(@AuthenticationPrincipal User user) {
+    public UserAccount getSiteUser(@AuthenticationPrincipal  UserAccount user) {
+
+        return user;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/user")
+    public UserAccount getUser(@AuthenticationPrincipal  UserAccount user) {
 
         return user;
     }

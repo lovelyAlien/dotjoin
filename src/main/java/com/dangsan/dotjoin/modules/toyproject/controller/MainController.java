@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/main")
+@RequestMapping("/main")
 public class MainController {
 
     private final ToyProjectService toyProjectService;

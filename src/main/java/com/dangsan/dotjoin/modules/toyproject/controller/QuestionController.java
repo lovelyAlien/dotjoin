@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}")
+@RequestMapping("/toyprojects/{projectId}/subprojects/{subProjectId}")
 public class QuestionController {
     private final QuestionService questionService;
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}/questions/{questionId}")
+@RequestMapping("/toyprojects/{projectId}/subprojects/{subProjectId}/questions/{questionId}")
 public class AnswerController {
 
     private final AnswerService answerService;

@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects")
+@RequestMapping("/toyprojects")
 public class ToyProjectController {
     private final ToyProjectService toyProjectService;
 
