@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        RefreshableJWTLoginFilter refreshableJWTLoginFilter = new RefreshableJWTLoginFilter(objectMapper, jwtUtil, accountService, authenticationManager());
+        JWTLoginFilter jwtLoginFilter = new JWTLoginFilter(objectMapper, jwtUtil, accountService, authenticationManager());
         JWTCheckFilter jwtCheckFilter = new JWTCheckFilter(authenticationManager(), accountService, jwtUtil);
 
         http.
@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                     .failureForwardUrl("/login?error=true");
                         }
                 )
-                .addFilter(refreshableJWTLoginFilter)
+                .addFilter(jwtLoginFilter)
                 .addFilter(jwtCheckFilter)
 
                 .sessionManagement()
@@ -85,20 +85,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     oauth
                             .userInfoEndpoint(userinfo -> {
                                 userinfo.userService(customOAuth2UserService);
-//                        userinfo.oidcUserService(customOidcUserService);
 
                             })
                             .successHandler(oAuth2SuccessHandler)
                             .loginPage("/login");
                 });
 
-//                .addFilterAfter(oidcUserToSiteUserFilter, OAuth2LoginAuthenticationFilter.class);
-//
-//                .loginPage("/login"); //구글 로그인이 완료된 후 후처리가 필요함.
-//                .userInfoEndpoint()
-//                .userService(oAuth2UserService);
-
-//        super.configure(http);
     }
 
 
