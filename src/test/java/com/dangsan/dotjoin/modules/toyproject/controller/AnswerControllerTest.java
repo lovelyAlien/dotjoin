@@ -118,7 +118,7 @@ class AnswerControllerTest {
     void registerAnswerTest() {
 
 
-        given(accountRepository.findByEmail(any())).willReturn(answerer);
+        given(accountRepository.findByEmail(any()).get()).willReturn(answerer);
         given(questionRepository.findById(any())).willReturn(Optional.of(question));
 
 

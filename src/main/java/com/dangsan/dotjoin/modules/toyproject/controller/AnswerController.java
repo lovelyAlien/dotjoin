@@ -1,5 +1,6 @@
 package com.dangsan.dotjoin.modules.toyproject.controller;
 
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireAllAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.kanban.UpdateTargetCardDto;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/toyprojects/{projectId}/subprojects/{subProjectId}/questions/{questionId}")
+@RequestMapping("/toyprojects/{projectId}/subprojects/{subProjectId}/questions/{questionId}")
 public class AnswerController {
 
     private final AnswerService answerService;

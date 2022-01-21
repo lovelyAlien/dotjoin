@@ -1,7 +1,5 @@
 package com.dangsan.dotjoin.modules.account.service;
 
-import com.dangsan.dotjoin.infra.config.AppProperties;
-import com.dangsan.dotjoin.infra.mail.EmailMessage;
 import com.dangsan.dotjoin.infra.utils.SecurityUtil;
 import com.dangsan.dotjoin.modules.account.dto.SignUpDto;
 import com.dangsan.dotjoin.modules.account.model.Account;
@@ -9,7 +7,10 @@ import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,9 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -32,14 +33,12 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    private final AppProperties appProperties;
-    private final TemplateEngine templateEngine;
-//    private final EmailService emailService;
+
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(emailOrNickname);
+        Account account = accountRepository.findByEmail(emailOrNickname).get();
         if (account == null) {
             account = accountRepository.findByNickname(emailOrNickname);
         }
@@ -52,41 +51,32 @@ public class AccountService implements UserDetailsService {
     }
 
 
-    public Account processNewAccount(SignUpDto signUpForm) {
-        if(accountRepository.existsByEmail(signUpForm.getEmail())||accountRepository.existsByNickname(signUpForm.getNickname())){
+    public Account processNewUser(SignUpDto signUpForm) {
+        if (accountRepository.existsByEmail(signUpForm.getEmail()) || accountRepository.existsByNickname(signUpForm.getNickname())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
-        Account newAccount = saveNewAccount(signUpForm);
+        Account newAccount = saveNewAccount(signUpForm, "USER");
 //        sendSignUpConfirmEmail(newAccount);
         return newAccount;
     }
 
-    private Account saveNewAccount(@Valid SignUpDto signUpForm) {
+
+    public Account processNewAdmin(SignUpDto signUpForm) {
+        if (accountRepository.existsByEmail(signUpForm.getEmail()) || accountRepository.existsByNickname(signUpForm.getNickname())) {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+        }
+        Account newAccount = saveNewAccount(signUpForm, "ADMIN");
+//        sendSignUpConfirmEmail(newAccount);
+        return newAccount;
+    }
+
+    private Account saveNewAccount(@Valid SignUpDto signUpForm, String role) {
 
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         Account account = modelMapper.map(signUpForm, Account.class);
-        account.setRoles("USER");
+        account.addRole(role);
         account.generateEmailCheckToken();
         return accountRepository.save(account);
-    }
-
-    public void sendSignUpConfirmEmail(Account newAccount) {
-        Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail());
-        context.setVariable("nickname", newAccount.getNickname());
-        context.setVariable("linkName", "이메일 인증하기");
-        context.setVariable("message", "스터디올래 서비스를 사용하려면 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(newAccount.getEmail())
-                .subject("스터디올래, 회원 가입 인증")
-                .message(message)
-                .build();
-
-//        emailService.sendEmail(emailMessage);
     }
 
 
@@ -103,11 +93,41 @@ public class AccountService implements UserDetailsService {
 //        return userRepository.findOneWithAuthoritiesByUsername(username);
 //    }
 //
-    @Transactional(readOnly = true)
-    public UserAccount getMyUserWithAuthorities() {
-        Optional<String> email= SecurityUtil.getCurrentEmail();
-        Account account=accountRepository.findByEmail(email.get());
-        return new UserAccount(account);
+
+
+    public void clearAllAccount() {
+        accountRepository.deleteAll();
+    }
+
+
+    public List<Account> getAllUser() {
+
+        System.out.println("서비스 접근");
+
+        return accountRepository.findAll();
+    }
+
+    public Optional<Account> findAccountByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
+
+    public Account findAccountByNickname(String nickname) {
+        return accountRepository.findByNickname(nickname);
+    }
+
+    public Account save(Account account) {
+        return accountRepository.save(account);
+    }
+
+    public Optional<Account> findAccountByProviderId(String providerId) {
+        return accountRepository.findByProviderId(providerId);
+    }
+
+    public void addRole(String email, String role) {
+        Account account = accountRepository.findByEmail(email).get();
+        account.addRole(role);
+
+
     }
 
 }

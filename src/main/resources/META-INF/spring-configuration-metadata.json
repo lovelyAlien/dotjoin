@@ -1,0 +1,17 @@
+{
+  "groups": [{
+    "name": "sp.jwt",
+    "type": "com.dangsan.infra.jwt.JWTProperties"
+  }],
+  "properties": [{
+    "name": "sp.jwt.secret",
+    "type": "java.lang.String"
+  }, {
+    "name": "sp.jwt.token-life-time",
+    "type": "java.lang.Long"
+  }, {
+    "name": "sp.jwt.token-refresh-time",
+    "type": "java.lang.Long"
+  }],
+  "hints": []
+}

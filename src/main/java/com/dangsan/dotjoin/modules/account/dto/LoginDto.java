@@ -12,6 +12,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class LoginDto {
 
+
+    public enum Type {
+        login,
+        refresh
+    }
+
     @NotNull
     @Size(min = 3, max = 50)
     private String email;
@@ -19,4 +25,10 @@ public class LoginDto {
     @NotNull
     @Size(min = 3, max = 100)
     private String password;
+
+    private Type type;
+
+    private String refreshToken;
+
+
 }

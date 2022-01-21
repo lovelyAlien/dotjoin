@@ -2,6 +2,7 @@ package com.dangsan.dotjoin.modules.toyproject.service;
 
 
 import com.dangsan.dotjoin.modules.account.model.Account;
+import com.dangsan.dotjoin.modules.account.model.UserAccount;
 import com.dangsan.dotjoin.modules.account.repository.AccountRepository;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireAllAnswerDto;
 import com.dangsan.dotjoin.modules.toyproject.dto.answer.InquireTargetAnswerDto;
@@ -50,7 +51,7 @@ public class AnswerService {
 
     public Long registerAnswer(Long questionId, User user){
         Question question= questionRepository.findById(questionId).get();
-        Account answerer= accountRepository.findByEmail(user.getUsername());
+        Account answerer= accountRepository.findByEmail(user.getUsername()).get();
 
         Answer answer= answerRepository.save(new Answer(question, answerer));
 

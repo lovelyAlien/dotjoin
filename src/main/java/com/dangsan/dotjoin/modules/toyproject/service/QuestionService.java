@@ -54,7 +54,7 @@ public class QuestionService {
 
     public Long registerQuestion(Long subProjectId, User user){
         SubProject subProject=subProjectRepository.findById(subProjectId).get();
-        Account questioner=accountRepository.findByEmail(user.getUsername());
+        Account questioner=accountRepository.findByEmail(user.getUsername()).get();
 
         Question question= questionRepository.save(new Question(subProject, questioner));
 
